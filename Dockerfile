@@ -2,8 +2,7 @@ FROM debian:wheezy
 
 MAINTAINER NGINX Docker Maintainers "docker-maint@nginx.com"
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q wget
-RUN wget -q -O - http://nginx.org/keys/nginx_signing.key | apt-key add -
+RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 RUN echo "deb http://nginx.org/packages/mainline/debian/ wheezy nginx" >> /etc/apt/sources.list
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
 
