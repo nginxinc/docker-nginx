@@ -2,13 +2,16 @@ FROM debian:wheezy
 
 MAINTAINER NGINX Docker Maintainers "docker-maint@nginx.com"
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q wget
-RUN wget -q -O - http://nginx.org/keys/nginx_signing.key | apt-key add -
+RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 RUN echo "deb http://nginx.org/packages/mainline/debian/ wheezy nginx" >> /etc/apt/sources.list
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
 
-# forward request logs to docker log collector
+ENV NGINX_VERSION 1.7.5-1~wheezy
+
+RUN apt-get update && apt-get install -y nginx=${NGINX_VERSION}
+
+# forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 # be backwards compatible with pre-official images
 RUN ln -sf ../share/nginx /usr/local/nginx
@@ -18,4 +21,4 @@ VOLUME ["/etc/nginx"]
 
 EXPOSE 80 443
 
-CMD ["/usr/sbin/nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off; error_log /dev/stderr warn;"]
+CMD ["nginx", "-g", "daemon off;"]
