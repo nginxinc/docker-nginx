@@ -13,9 +13,6 @@ RUN apt-get update && apt-get install -y nginx=${NGINX_VERSION}
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
-# be backwards compatible with pre-official images
-RUN ln -sf ../share/nginx /usr/local/nginx
-
 VOLUME ["/usr/share/nginx/html"]
 VOLUME ["/etc/nginx"]
 
