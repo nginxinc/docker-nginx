@@ -1,0 +1,35 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+  override:
+    - mkdir -p ~/docker
+    - if [[ -e ~/docker/nginx.tar ]]; then docker load -i ~/docker/nginx.tar; fi
+    - docker build -t quay.io/ssro/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH .
+    - docker save "quay.io/ssro/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH" > ~/docker/nginx.tar
+
+database:
+  override:
+    - echo 'No DB'
+
+test:
+  override:
+    - echo 'No test'
+deployment:
+  production:
+    branch: master
+    commands:
+      - sed "s/<EMAIL>/$EMAIL/;s/<AUTH>/$AUTH/" dockercfg.template > ~/.dockercfg
+      - docker push quay.io/ssro/$CIRCLE_PROJECT_REPONAME:latest
+      - ./deploy.sh production :
+          timeout: 600
+  staging:
+    branch: development
+    commands:
+      - sed "s/<EMAIL>/$EMAIL/;s/<AUTH>/$AUTH/" dockercfg.template > ~/.dockercfg
+      - docker push quay.io/ssro/$CIRCLE_PROJECT_REPONAME:development
+      - ./deploy.sh staging :
+          timeout: 600
