@@ -18,9 +18,6 @@ if [[ $env == 'production' ]]; then
  elif [[ $env == 'staging' ]]; then
   FILTER="DEPLOY_CORE_STAGING"
   MASTER=$DEPLOY_CORE_STAGING1
-# elif [[ $env == 'testing']]; then
-#  FILTER="DEPLOY_CORE_TESTING"
-#  MASTER=$DEPLOY_CORE_TESTING1
 fi
 
 # Need to pull on all servers
@@ -31,5 +28,5 @@ done
 wait
 
 # Then connect to one controller is enough
-ssh core@$MASTER  "fleetctl stop ubuntu \
-	 && fleetctl start ubuntu"
+ssh core@$MASTER  "fleetctl stop nginx \
+	 && fleetctl start nginx"
