@@ -17,6 +17,6 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 VOLUME ["/var/cache/nginx"]
 
-EXPOSE 80 443
+EXPOSE 8000 4430
 
 CMD ["nginx", "-g", "daemon off;"]
