@@ -15,6 +15,8 @@ RUN apt-get update && \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
+# Improves performance by declaring an explicit volume that bypasses docker's copy-on-write backend (e.g. aufs)
+# and bind-mounts the data directly from the host filesystem.
 VOLUME ["/var/cache/nginx"]
 
 EXPOSE 80 443
