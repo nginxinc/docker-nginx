@@ -1,6 +1,0 @@
-[nginx]
-name=nginx repo
-baseurl=http://nginx.org/packages/mainline/centos/6/$basearch/
-gpgcheck=1
-repogpgcheck=1
-enabled=1
