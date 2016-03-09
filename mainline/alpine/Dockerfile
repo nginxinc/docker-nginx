@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.3
 
 MAINTAINER NGINX Docker Maintainers "docker-maint@nginx.com"
 
