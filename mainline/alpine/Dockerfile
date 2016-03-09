@@ -2,12 +2,13 @@ FROM alpine:latest
 
 MAINTAINER NGINX Docker Maintainers "docker-maint@nginx.com"
 
-ENV NGINX_VERSION 1.9.11
+ENV NGINX_VERSION 1.9.12
 
 ENV GPG_KEYS B0F4253373F8F6F510D42178520A9993A1C052F8
 ENV CONFIG "\
 	--prefix=/etc/nginx \
 	--sbin-path=/usr/sbin/nginx \
+	--modules-path=/usr/lib/nginx/modules \
 	--conf-path=/etc/nginx/nginx.conf \
 	--error-log-path=/var/log/nginx/error.log \
 	--http-log-path=/var/log/nginx/access.log \
@@ -33,6 +34,9 @@ ENV CONFIG "\
 	--with-http_secure_link_module \
 	--with-http_stub_status_module \
 	--with-http_auth_request_module \
+	--with-http_xslt_module=dynamic \
+	--with-http_image_filter_module=dynamic \
+	--with-http_geoip_module=dynamic \
 	--with-threads \
 	--with-stream \
 	--with-stream_ssl_module \
@@ -57,6 +61,9 @@ RUN \
 		linux-headers \
 		curl \
 		gnupg \
+		libxslt-dev \
+		gd-dev \
+		geoip-dev \
 	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
@@ -69,13 +76,21 @@ RUN \
 	&& ./configure $CONFIG --with-debug \
 	&& make \
 	&& mv objs/nginx objs/nginx-debug \
+	&& mv objs/ngx_http_xslt_filter_module.so objs/ngx_http_xslt_filter_module-debug.so \
+	&& mv objs/ngx_http_image_filter_module.so objs/ngx_http_image_filter_module-debug.so \
+	&& mv objs/ngx_http_geoip_module.so objs/ngx_http_geoip_module-debug.so \
 	&& ./configure $CONFIG \
 	&& make \
 	&& make install \
 	&& install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
+	&& install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so \
+	&& install -m755 objs/ngx_http_image_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_image_filter_module-debug.so \
+	&& install -m755 objs/ngx_http_geoip_module-debug.so /usr/lib/nginx/modules/ngx_http_geoip_module-debug.so \
+	&& ln -s ../../usr/lib/nginx/modules /etc/nginx/modules \
 	&& strip /usr/sbin/nginx* \
+	&& strip /usr/lib/nginx/modules/*.so \
 	&& runDeps="$( \
-		scanelf --needed --nobanner /usr/sbin/nginx \
+		scanelf --needed --nobanner /usr/sbin/nginx /usr/lib/nginx/modules/*.so \
 			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
 			| sort -u \
 			| xargs -r apk info --installed \
