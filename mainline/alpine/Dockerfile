@@ -64,14 +64,15 @@ RUN \
 		libxslt-dev \
 		gd-dev \
 		geoip-dev \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
-	&& gpg --verify nginx.tar.gz.asc \
+	&& export GNUPGHOME="$(mktemp -d)" \
+	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
+	&& gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
+	&& rm -r "$GNUPGHOME" nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \
 	&& tar -zxC /usr/src -f nginx.tar.gz \
-	&& rm nginx.tar.gz* \
-	&& rm -r /root/.gnupg \
+	&& rm nginx.tar.gz \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
 	&& make \
@@ -98,7 +99,7 @@ RUN \
 	)" \
 	&& apk add --virtual .nginx-rundeps $runDeps \
 	&& apk del .build-deps \
-	&& rm -rf /usr/src/nginx-* \
+	&& rm -rf /usr/src/nginx-$NGINX_VERSION \
 	\
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
