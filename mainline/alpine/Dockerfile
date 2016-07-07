@@ -99,17 +99,26 @@ RUN \
 	&& ln -s ../../usr/lib/nginx/modules /etc/nginx/modules \
 	&& strip /usr/sbin/nginx* \
 	&& strip /usr/lib/nginx/modules/*.so \
+	&& rm -rf /usr/src/nginx-$NGINX_VERSION \
+	\
+	# Bring in gettext so we can get `envsubst`, then throw
+	# the rest away. To do this, we need to install `gettext`
+	# then move `envsubst` out of the way so `gettext` can
+	# be deleted completely, then move `envsubst` back.
+	&& apk add --no-cache --virtual .gettext gettext \
+	&& mv /usr/bin/envsubst /tmp/ \
+	\
 	&& runDeps="$( \
-		scanelf --needed --nobanner /usr/sbin/nginx /usr/lib/nginx/modules/*.so \
+		scanelf --needed --nobanner /usr/sbin/nginx /usr/lib/nginx/modules/*.so /tmp/envsubst \
 			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
 			| sort -u \
 			| xargs -r apk info --installed \
 			| sort -u \
 	)" \
-	&& apk add --virtual .nginx-rundeps $runDeps \
+	&& apk add --no-cache --virtual .nginx-rundeps $runDeps \
 	&& apk del .build-deps \
-	&& rm -rf /usr/src/nginx-$NGINX_VERSION \
-	&& apk add --no-cache gettext \
+	&& apk del .gettext \
+	&& mv /tmp/envsubst /usr/bin/ \
 	\
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
