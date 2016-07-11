@@ -1,0 +1,24 @@
+language: bash
+services: docker
+
+env:
+  - VARIANT=jessie CHANNEL=mainline
+  - VARIANT=jessie CHANNEL=stable
+  - VARIANT=alpine CHANNEL=mainline
+  - VARIANT=alpine CHANNEL=stable
+
+install:
+  - git clone https://github.com/docker-library/official-images.git ~/official-images
+
+before_script:
+  - env | sort
+  - image="nginx:$VARIANT"
+
+script:
+  - docker build -t "$image" "$CHANNEL/$VARIANT"
+  - ~/official-images/test/run.sh "$image"
+
+after_script:
+  - docker images
+
+# vim:set et ts=2 sw=2:
