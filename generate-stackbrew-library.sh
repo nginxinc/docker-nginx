@@ -39,7 +39,7 @@ dirCommit() {
 cat <<-EOH
 # this file is generated via https://github.com/nginxinc/docker-nginx/blob/$(fileCommit "$self")/$self
 
-Maintainers: Docker Maintainers <docker-maint@nginx.com>
+Maintainers: NGINX Docker Maintainers <docker-maint@nginx.com> (@nginxinc)
 GitRepo: https://github.com/nginxinc/docker-nginx.git
 EOH
 
