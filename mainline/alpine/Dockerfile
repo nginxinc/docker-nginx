@@ -2,7 +2,7 @@ FROM alpine:3.4
 
 MAINTAINER NGINX Docker Maintainers "docker-maint@nginx.com"
 
-ENV NGINX_VERSION 1.11.3
+ENV NGINX_VERSION 1.11.4
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
@@ -41,6 +41,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--with-threads \
 		--with-stream \
 		--with-stream_ssl_module \
+		--with-stream_realip_module \
 		--with-stream_geoip_module=dynamic \
 		--with-http_slice_module \
 		--with-mail \
