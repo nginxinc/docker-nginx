@@ -24,11 +24,11 @@ RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/a
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 						ca-certificates \
 						nginx=${NGINX_VERSION} \
-						nginx-module-xslt \
-						nginx-module-geoip \
-						nginx-module-image-filter \
-						nginx-module-perl \
-						nginx-module-njs \
+						nginx-module-xslt=${NGINX_VERSION} \
+						nginx-module-geoip=${NGINX_VERSION} \
+						nginx-module-image-filter=${NGINX_VERSION} \
+						nginx-module-perl=${NGINX_VERSION} \
+						nginx-module-njs=${NGINX_VERSION} \
 						gettext-base \
 	&& rm -rf /var/lib/apt/lists/*
 
