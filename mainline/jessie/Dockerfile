@@ -2,7 +2,7 @@ FROM debian:jessie
 
 MAINTAINER NGINX Docker Maintainers "docker-maint@nginx.com"
 
-ENV NGINX_VERSION 1.11.12-1~jessie
+ENV NGINX_VERSION 1.11.13-1~jessie
 
 RUN set -e; \
 	NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
