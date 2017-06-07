@@ -1,9 +1,9 @@
-# About this Repo
+# nginx docker images
 
-This is the Git repo of the official Docker image for [nginx](https://registry.hub.docker.com/_/nginx/). See the
-Hub page for the full readme on how to use the Docker image and for information
-regarding contributing and issues.
+This is a [Toolhouse][toolhouse] fork of the [official Docker image for nginx][upstream], with changes that make it  more appropriate as a base image. 
 
-The full readme is generated over in [docker-library/docs](https://github.com/docker-library/docs),
-specificially in [docker-library/docs/nginx](https://github.com/docker-library/docs/tree/master/nginx).
+The images are kept as close as possible to the official images. See the [official image readme][upstream-readme] for documentation. 
 
+[toolhouse]: http://toolhouse.com
+[upstream]: https://registry.hub.docker.com/_/nginx/
+[upstream-readme]: https://github.com/docker-library/docs/tree/master/nginx
