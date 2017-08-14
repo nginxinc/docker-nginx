@@ -96,4 +96,18 @@ for version in "${versions[@]}"; do
 			Directory: $version/$variant
 		EOE
 	done
+
+	for variant in openshift; do
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		echo
+		cat <<-EOE
+			Tags: $(join ', ' "${variantAliases[@]}")
+			GitCommit: $commit
+			Directory: $version/$variant
+		EOE
+	done
 done
