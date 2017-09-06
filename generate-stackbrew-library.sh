@@ -65,7 +65,7 @@ for version in "${versions[@]}"; do
 	echo
 	cat <<-EOE
 		Tags: $(join ', ' "${versionAliases[@]}")
-		Architectures: amd64, i386, s390x
+		Architectures: amd64, arm32v7, arm64v8, i386, ppc64le, s390x
 		GitCommit: $commit
 		Directory: $version/$base
 	EOE
