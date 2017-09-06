@@ -100,4 +100,22 @@ for version in "${versions[@]}"; do
 			Directory: $version/$variant
 		EOE
 	done
+
+	for variant in amplify; do
+        if [ "$version" == "stable" ]; then
+               continue
+        fi
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		echo
+		cat <<-EOE
+			Tags: $(join ', ' "${variantAliases[@]}")
+			GitCommit: $commit
+			Directory: $version/$variant
+		EOE
+	done
+
 done
