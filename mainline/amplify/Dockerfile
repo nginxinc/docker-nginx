@@ -2,9 +2,9 @@ FROM debian:stretch-slim
 
 LABEL maintainer="NGINX Amplify Engineering"
 
-ENV NGINX_VERSION         1.13.5-1~stretch
-ENV NJS_VERSION           1.13.5.0.1.13-1~stretch
-ENV AMPLIFY_AGENT_VERSION 0.45-2~stretch
+ENV NGINX_VERSION         1.13.6-1~stretch
+ENV NJS_VERSION           1.13.6.0.1.14-1~stretch
+ENV AMPLIFY_AGENT_VERSION 0.46-2~stretch
 
 RUN set -x \
     && deps="apt-transport-https apt-utils gnupg1 ca-certificates" \
