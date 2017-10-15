@@ -17,8 +17,8 @@ RUN set -x \
     found=''; \
     for server in \
         ha.pool.sks-keyservers.net \
-        hkp://keyserver.ubuntu.com:80 \
-        hkp://p80.pool.sks-keyservers.net:80 \
+        hkps://keyserver.ubuntu.com:80 \
+        hkps://p80.pool.sks-keyservers.net:80 \
         pgp.mit.edu \
     ; do \
         echo "Fetching GPG key $NGINX_GPGKEY from $server"; \
