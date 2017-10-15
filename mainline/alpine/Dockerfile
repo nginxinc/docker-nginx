@@ -65,14 +65,14 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		libxslt-dev \
 		gd-dev \
 		geoip-dev \
-	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
-	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
+	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
+	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& found=''; \
 	for server in \
 		ha.pool.sks-keyservers.net \
-		hkp://keyserver.ubuntu.com:80 \
-		hkp://p80.pool.sks-keyservers.net:80 \
+		hkps://keyserver.ubuntu.com:80 \
+		hkps://p80.pool.sks-keyservers.net:80 \
 		pgp.mit.edu \
 	; do \
 		echo "Fetching GPG key $GPG_KEYS from $server"; \
