@@ -101,4 +101,4 @@ for version in "${versions[@]}"; do
 		EOE
 	done
 
-dne
+done
