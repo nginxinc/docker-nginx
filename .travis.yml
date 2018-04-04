@@ -1,0 +1,14 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+   - cd mainline/alpine && docker build -t toshi38/docker-nginx-cache-purge .
+
+after_success:
+  - echo $TRAVIS_BRANCH
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push toshi38/docker-nginx-cache-purge;
+    fi
