@@ -2,8 +2,8 @@ FROM debian:stretch-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.13.8-1~stretch
-ENV NJS_VERSION   1.13.8.0.1.15-1~stretch
+ENV NGINX_VERSION 1.15.2-1~stretch
+ENV NJS_VERSION   1.15.2.0.2.2-1~stretch
 
 RUN set -x \
 	&& apt-get update \
@@ -40,7 +40,7 @@ RUN set -x \
 		*) \
 # we're on an architecture upstream doesn't officially build for
 # let's build binaries from the published source packages
-			echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list/nginx.list \
+			echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list \
 			\
 # new directory for storing sources and .deb files
 			&& tempDir="$(mktemp -d)" \
@@ -81,7 +81,7 @@ RUN set -x \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 						$nginxPackages \
 						gettext-base \
-	&& apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list/nginx.list \
+	&& apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
 	\
 # if we have leftovers from building, let's purge them (including extra, unnecessary build deps)
 	&& if [ -n "$tempDir" ]; then \
