@@ -2,8 +2,8 @@ FROM debian:stretch-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.15.4-1~stretch
-ENV NJS_VERSION   1.15.4.0.2.4-1~stretch
+ENV NGINX_VERSION 1.15.5-1~stretch
+ENV NJS_VERSION   1.15.5.0.2.4-1~stretch
 
 RUN set -x \
 	&& apt-get update \
