@@ -5,6 +5,10 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ENV NGINX_VERSION 1.15.5-1~stretch
 ENV NJS_VERSION   1.15.5.0.2.4-1~stretch
 
+# Stable gid/uid allows you pre-configure disk volumes with proper ownership (`chown`) for use by Nginx.
+ENV NGINX_GID 8123
+ENV NGINX_UID 8123
+
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 apt-transport-https ca-certificates \
@@ -88,6 +92,9 @@ RUN set -x \
 		apt-get purge -y --auto-remove \
 		&& rm -rf "$tempDir" /etc/apt/sources.list.d/temp.list; \
 	fi
+
+RUN groupmod -g $NGINX_GID nginx \
+    && usermod -u $NGINX_UID nginx
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \

@@ -4,6 +4,10 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION 1.14.0
 
+# Stable gid/uid allows you pre-configure disk volumes with proper ownership (`chown`) for use by Nginx.
+ENV NGINX_GID 8123
+ENV NGINX_UID 8123
+
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
 		--prefix=/etc/nginx \
@@ -50,8 +54,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--with-file-aio \
 		--with-http_v2_module \
 	" \
-	&& addgroup -S nginx \
-	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
+	&& addgroup -S --gid $NGINX_UID nginx \
+	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx --uid $NGINX_UID nginx \
 	&& apk add --no-cache --virtual .build-deps \
 		gcc \
 		libc-dev \
