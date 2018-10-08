@@ -5,10 +5,6 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ENV NGINX_VERSION 1.14.0-1~stretch
 ENV NJS_VERSION   1.14.0.0.2.0-1~stretch
 
-# Stable gid/uid allows you pre-configure disk volumes with proper ownership (`chown`) for use by Nginx.
-ENV NGINX_GID 8123
-ENV NGINX_UID 8123
-
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 apt-transport-https ca-certificates \
@@ -92,9 +88,6 @@ RUN set -x \
 		&& rm -rf "$tempDir" /etc/apt/sources.list.d/temp.list; \
 	fi
 
-RUN groupmod -g $NGINX_GID nginx \
-    && usermod -u $NGINX_UID nginx
-
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
@@ -102,5 +95,8 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
+
+COPY entrypoint.sh /opt/entrypoint.sh
+ENTRYPOINT ["/opt/entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]
