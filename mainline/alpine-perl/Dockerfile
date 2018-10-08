@@ -137,7 +137,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	# variables
 	&& apk add --no-cache tzdata \
 	# Install groupmod & usermod so users could update gid/uid through environment
-    # variables (see entrypoint).
+	# variables (see entrypoint).
     && apk add --no-cache shadow \
 	\
 	# forward request and error logs to docker log collector
