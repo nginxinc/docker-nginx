@@ -3,6 +3,7 @@ FROM alpine:3.8
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION 1.15.5
+ENV headers_more_module_version 0.33
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
@@ -50,6 +51,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--with-compat \
 		--with-file-aio \
 		--with-http_v2_module \
+                --add-module=/usr/src/headers-more-nginx-module-$headers_more_module_version \
 	" \
 	&& addgroup -S nginx \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
@@ -69,6 +71,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		perl-dev \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
+        && curl -fSL https://github.com/openresty/headers-more-nginx-module/archive/v$headers_more_module_version.tar.gz -o headers-more-nginx-module.tar.gz \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& found=''; \
 	for server in \
@@ -86,6 +89,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& mkdir -p /usr/src \
 	&& tar -zxC /usr/src -f nginx.tar.gz \
 	&& rm nginx.tar.gz \
+        && tar -zxC /usr/src -f headers-more-nginx-module.tar.gz \
+	&& rm headers-more-nginx-module.tar.gz \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
