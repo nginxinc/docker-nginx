@@ -19,7 +19,7 @@ This must currently be done in each of the 8 individual $os/$os-perl branches of
 
 Currently Added Modules:
 
-- nginx-vts
+- [nginx-vts](https://github.com/vozlt/nginx-module-vts)
 
 
 The full readme is generated over in [docker-library/docs](https://github.com/docker-library/docs),
