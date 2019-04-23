@@ -2,8 +2,9 @@ FROM debian:stretch-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.14.2-1~stretch
-ENV NJS_VERSION   1.14.2.0.2.6-1~stretch
+ENV NGINX_VERSION   1.16.0
+ENV NJS_VERSION     0.3.1
+ENV PKG_RELEASE     1~stretch
 
 RUN set -x \
 	&& apt-get update \
@@ -23,13 +24,13 @@ RUN set -x \
 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
 	apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/* \
 	&& dpkgArch="$(dpkg --print-architecture)" \
-	&& nginxPackages=" \
-		nginx=${NGINX_VERSION} \
-		nginx-module-xslt=${NGINX_VERSION} \
-		nginx-module-geoip=${NGINX_VERSION} \
-		nginx-module-image-filter=${NGINX_VERSION} \
-		nginx-module-perl=${NGINX_VERSION} \
-		nginx-module-njs=${NJS_VERSION} \
+    && nginxPackages=" \
+        nginx=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-perl=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-${PKG_RELEASE} \
 	" \
 	&& case "$dpkgArch" in \
 		amd64|i386) \

@@ -2,8 +2,8 @@ FROM alpine:3.9
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.14.2
-ENV NJS_VERSION   1.14.2.0.2.7
+ENV NGINX_VERSION 1.16.0
+ENV NJS_VERSION   0.3.1
 ENV PKG_RELEASE 1
 
 RUN set -x \
@@ -13,7 +13,7 @@ RUN set -x \
         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE} \
-        nginx-module-njs=${NJS_VERSION}-r${PKG_RELEASE} \
+        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${PKG_RELEASE} \
     " \
     && case "$apkArch" in \
         x86_64) \
@@ -65,9 +65,7 @@ RUN set -x \
                 && cd ${tempDir} \
                 && hg clone https://hg.nginx.org/pkg-oss \
                 && cd pkg-oss \
-# fixme: needs to check out a tag on the next 1.14 release
-                && hg up stable-1.14 \
-                && echo hg up ${NGINX_VERSION}-${PKG_RELEASE} \
+                && hg up ${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
                 && make all \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
