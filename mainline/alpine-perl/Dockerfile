@@ -3,7 +3,7 @@ FROM alpine:3.9
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION 1.15.12
-ENV NJS_VERSION   1.15.12.0.3.1
+ENV NJS_VERSION   0.3.1
 ENV PKG_RELEASE 1
 
 RUN set -x \
@@ -14,7 +14,7 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-perl=${NGINX_VERSION}-r${PKG_RELEASE} \
-        nginx-module-njs=${NJS_VERSION}-r${PKG_RELEASE} \
+        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${PKG_RELEASE} \
     " \
     && case "$apkArch" in \
         x86_64) \
