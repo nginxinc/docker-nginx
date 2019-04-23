@@ -54,7 +54,6 @@ for version in "${versions[@]}"; do
 	commit="$(dirCommit "$version/$base")"
 
 	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
-	fullVersion="${fullVersion%[.-]*}"
 
 	versionAliases=( $fullVersion )
 	if [ "$version" != "$fullVersion" ]; then
