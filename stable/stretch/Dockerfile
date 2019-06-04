@@ -7,6 +7,9 @@ ENV NJS_VERSION     0.3.2
 ENV PKG_RELEASE     1~stretch
 
 RUN set -x \
+# create nginx user/group first, to be consistent throughout docker variants
+    && addgroup --system --gid 101 nginx \
+    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 101 nginx \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 apt-transport-https ca-certificates \
 	&& \
