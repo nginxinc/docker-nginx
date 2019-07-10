@@ -9,7 +9,7 @@ aliases=(
 
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
-base=stretch
+base=buster
 
 versions=( */ )
 versions=( "${versions[@]%/}" )
@@ -69,7 +69,7 @@ for version in "${versions[@]}"; do
 		Directory: $version/$base
 	EOE
 
-	for variant in stretch-perl; do
+	for variant in buster-perl; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
