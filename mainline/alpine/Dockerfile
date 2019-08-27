@@ -68,7 +68,7 @@ RUN set -x \
                 && cd ${tempDir} \
                 && hg clone https://hg.nginx.org/pkg-oss \
                 && cd pkg-oss \
-                && hg up ${NGINX_VERSION}-${PKG_RELEASE} \
+                && hg up -r 428 \
                 && cd alpine \
                 && make all \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
