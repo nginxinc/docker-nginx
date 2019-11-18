@@ -1,12 +1,20 @@
-# About this Repo
+# TL;DR
 
-This is the Git repo of the official Docker image for [nginx](https://registry.hub.docker.com/_/nginx/). See the
-Hub page for the full readme on how to use the Docker image and for information
-regarding contributing and issues.
+Custom nginx build with modsecurity
 
-The full readme is generated over in [docker-library/docs](https://github.com/docker-library/docs),
-specificially in [docker-library/docs/nginx](https://github.com/docker-library/docs/tree/master/nginx).
+## Overview
 
-## CTDS Additions
+Why do we build our own nginx rather than just use a stock image?
+We need the following nginx modules in an open source nginx build:
 
-Add more_headers module to mainline/alpine-perl
+* perl
+* more-headers
+* modsecurity
+
+## Resources
+
+* modsecurity e-book on our shared Google drive: https://drive.google.com/drive/u/1/folders/1ky_9gL_stSEHupRty6EjFBefRPW4qJGj
+* https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/
+* https://github.com/theonemule/docker-waf/blob/master/waf/Dockerfile
+* https://www.feistyduck.com/library/modsecurity%2dhandbook%2d2ed%2dfree/online/
+* https://nginx.org/en/linux_packages.html#mainline
