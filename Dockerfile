@@ -63,4 +63,5 @@ RUN nginver=$(nginx -v 2>&1 | awk -F / '{ print $2 }') && \
     cp objs/*.so /etc/nginx/modules
 
 EXPOSE 80
+STOPSIGNAL SIGTERM
 CMD nginx -g 'daemon off;'
