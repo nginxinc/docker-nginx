@@ -4,5 +4,4 @@
 
 testPipeline {
   quayRegistry = "nginx"
-  serviceTesting = [name: "revproxy"]
 }
