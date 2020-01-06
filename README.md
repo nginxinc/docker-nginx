@@ -1,12 +1,51 @@
-# About this Repo
+# TL;DR
 
-This is the Git repo of the official Docker image for [nginx](https://registry.hub.docker.com/_/nginx/). See the
-Hub page for the full readme on how to use the Docker image and for information
-regarding contributing and issues.
+Custom nginx build with modsecurity
 
-The full readme is generated over in [docker-library/docs](https://github.com/docker-library/docs),
-specificially in [docker-library/docs/nginx](https://github.com/docker-library/docs/tree/master/nginx).
+## Overview
 
-## CTDS Additions
+Why do we build our own nginx rather than just use a stock image?
+We need the following nginx modules in an open source nginx build:
 
-Add more_headers module to mainline/alpine-perl
+* perl
+* more-headers
+* modsecurity
+
+## Resources
+
+* modsecurity e-book on our shared Google drive: https://drive.google.com/drive/u/1/folders/1ky_9gL_stSEHupRty6EjFBefRPW4qJGj
+* modsecurity directives: https://github.com/SpiderLabs/ModSecurity-nginx
+* https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/
+* example Docker with static module: https://github.com/theonemule/docker-waf/blob/master/waf/Dockerfile
+* https://nginx.org/en/linux_packages.html#mainline
+* building dynamic modules: https://www.nginx.com/blog/compiling-dynamic-modules-nginx-plus/?_ga=2.124028234.1768100344.1574456112-1181068452.1536598294
+
+```
+The njs dynamic modules for nginx have been installed.
+To enable these modules, add the following to /etc/nginx/nginx.conf
+and reload nginx:
+
+    load_module modules/ngx_http_js_module.so;
+    load_module modules/ngx_stream_js_module.so;
+
+Please refer to the modules documentation for further details:
+http://nginx.org/en/docs/njs/
+http://nginx.org/en/docs/http/ngx_http_js_module.html
+http://nginx.org/en/docs/stream/ngx_stream_js_module.html
+
+----------------------------------------------------------------------
+Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+Setting up nginx-module-perl (1.17.6-1~bionic) ...
+----------------------------------------------------------------------
+
+The Perl dynamic module for nginx has been installed.
+To enable this module, add the following to /etc/nginx/nginx.conf
+and reload nginx:
+
+    load_module modules/ngx_http_perl_module.so;
+
+Please refer to the module documentation for further details:
+http://nginx.org/en/docs/http/ngx_http_perl_module.html
+
+----------------------------------------------------------------------
+```
