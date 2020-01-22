@@ -17,4 +17,4 @@ sleep 10
 curl -D - http://localhost:9085/
 curl -D - http://localhost:9080/
 curl -D - http://localhost:9080/foo?testparam=thisisatestofmodsecurity
-
+docker logs nginx-test

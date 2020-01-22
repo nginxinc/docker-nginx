@@ -6,7 +6,7 @@ FROM ubuntu:18.04
 # https://nginx.org/en/linux_packages.html#Ubuntu
 #
 RUN apt-get update && \
-    apt -y install curl gnupg2 ca-certificates lsb-release git less && \
+    apt -y install curl gnupg2 ca-certificates lsb-release git less libyajl-dev && \
     echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list && \
     echo "deb http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
@@ -18,7 +18,8 @@ RUN apt-get update && \
     apt-get install -y dnsutils git wget build-essential libpcre3 libpcre3-dev libssl-dev libtool autoconf apache2-dev libxml2-dev libcurl4-openssl-dev automake pkgconf vim && \
     apt clean && \
     ln -sf /dev/stdout /var/log/nginx/access.log && \
-	  ln -sf /dev/stderr /var/log/nginx/error.log
+	  ln -sf /dev/stderr /var/log/nginx/error.log && \
+    ln -sf /dev/stdout /var/log/modsec_audit.log
 
 #
 # Put compiled module source under /usr/src
