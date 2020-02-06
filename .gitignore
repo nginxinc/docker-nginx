@@ -1,0 +1,17 @@
+node_modules/
+Secrets/
+*.lock*
+*.env
+*.bak
+*.old
+*~
+*.swp
+*.zip
+.DS_Store
+
+# Python related 
+*__pycache__
+*.pytest_cache
+*.cache
+*pyc
+!doc/terraform

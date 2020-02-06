@@ -1,4 +1,6 @@
 # TL;DR
 
-`bash runTest.sh nginx:reuben`
-
+Some basic tests for our nginx build.
+```
+bash runTest.sh
+```
