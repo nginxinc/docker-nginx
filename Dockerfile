@@ -67,8 +67,11 @@ RUN nginver=$(nginx -v 2>&1 | awk -F / '{ print $2 }') && \
 # Uncomment to include CIS Assessor tools:
 #    https://workbench.cisecurity.org/
 #
-COPY Assessor-CLI-v4.0.17.zip /mnt/Assessor-CLI/
-RUN apt update && apt install openjdk-11-jre rsync zip unzip -y && apt clean;
+# Note: build fails in quay with .zip COPY, but can
+#   build a local image for test/cis/ or to push.
+#
+#COPY Assessor-CLI-v4.0.17.zip /mnt/Assessor-CLI/
+#RUN apt update && apt install openjdk-11-jre rsync zip unzip -y && apt clean;
 
 EXPOSE 80
 STOPSIGNAL SIGTERM
