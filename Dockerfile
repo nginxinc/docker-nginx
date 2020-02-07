@@ -63,6 +63,16 @@ RUN nginver=$(nginx -v 2>&1 | awk -F / '{ print $2 }') && \
     make modules && \
     cp objs/*.so /etc/nginx/modules
 
+#
+# Uncomment to include CIS Assessor tools:
+#    https://workbench.cisecurity.org/
+#
+# Note: build fails in quay with .zip COPY, but can
+#   build a local image for test/cis/ or to push.
+#
+#COPY Assessor-CLI-v4.0.17.zip /mnt/Assessor-CLI/
+#RUN apt update && apt install openjdk-11-jre rsync zip unzip -y && apt clean;
+
 EXPOSE 80
 STOPSIGNAL SIGTERM
 CMD nginx -g 'daemon off;'
