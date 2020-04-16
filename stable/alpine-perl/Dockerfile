@@ -1,12 +1,23 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
+<<<<<<< HEAD
 ENV NGINX_VERSION 1.14.2
 ENV NJS_VERSION   1.14.2.0.2.7
 ENV PKG_RELEASE 1
 
 RUN set -x \
+=======
+ENV NGINX_VERSION 1.16.1
+ENV NJS_VERSION   0.3.8
+ENV PKG_RELEASE   1
+
+RUN set -x \
+# create nginx user/group first, to be consistent throughout docker variants
+    && addgroup -g 101 -S nginx \
+    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx \
+>>>>>>> master
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-r${PKG_RELEASE} \
@@ -14,7 +25,11 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-perl=${NGINX_VERSION}-r${PKG_RELEASE} \
+<<<<<<< HEAD
         nginx-module-njs=${NJS_VERSION}-r${PKG_RELEASE} \
+=======
+        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${PKG_RELEASE} \
+>>>>>>> master
     " \
     && case "$apkArch" in \
         x86_64) \
@@ -22,6 +37,7 @@ RUN set -x \
             set -x \
             && KEY_SHA512="e7fa8303923d9b95db37a77ad46c68fd4755ff935d0a534d26eba83de193c76166c68bfe7f65471bf8881004ef4aa6df3e34689c305662750c0172fca5d8552a *stdin" \
             && apk add --no-cache --virtual .cert-deps \
+<<<<<<< HEAD
                 openssl curl ca-certificates \
             && curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
             && if [ "$(openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout | openssl sha512 -r)" = "$KEY_SHA512" ]; then \
@@ -37,6 +53,19 @@ RUN set -x \
                 "/main" \
             | tee -a /etc/apk/repositories \
             && apk del .cert-deps \
+=======
+                openssl \
+            && wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
+            && if [ "$(openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout | openssl sha512 -r)" = "$KEY_SHA512" ]; then \
+                echo "key verification succeeded!"; \
+                mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/; \
+            else \
+                echo "key verification failed!"; \
+                exit 1; \
+            fi \
+            && apk del .cert-deps \
+            && apk add -X "https://nginx.org/packages/alpine/v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages \
+>>>>>>> master
             ;; \
         *) \
 # we're on an architecture upstream doesn't officially build for
@@ -61,31 +90,50 @@ RUN set -x \
                 bash \
                 alpine-sdk \
                 findutils \
+<<<<<<< HEAD
             && su - nobody -s /bin/sh -c " \
+=======
+            && su nobody -s /bin/sh -c " \
+>>>>>>> master
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
                 && hg clone https://hg.nginx.org/pkg-oss \
                 && cd pkg-oss \
+<<<<<<< HEAD
 # fixme: needs to check out a tag on the next 1.14 release
                 && hg up stable-1.14 \
                 && echo hg up ${NGINX_VERSION}-${PKG_RELEASE} \
+=======
+                && hg up -r 450 \
+>>>>>>> master
                 && cd alpine \
                 && make all \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
                 && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
                 " \
+<<<<<<< HEAD
             && echo "${tempDir}/packages/alpine/" >> /etc/apk/repositories \
             && cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/ \
             && apk del .build-deps \
             ;; \
     esac \
     && apk add --no-cache $nginxPackages \
+=======
+            && cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/ \
+            && apk del .build-deps \
+            && apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
+            ;; \
+    esac \
+>>>>>>> master
 # if we have leftovers from building, let's purge them (including extra, unnecessary build deps)
     && if [ -n "$tempDir" ]; then rm -rf "$tempDir"; fi \
     && if [ -n "/etc/apk/keys/abuild-key.rsa.pub" ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi \
     && if [ -n "/etc/apk/keys/nginx_signing.rsa.pub" ]; then rm -f /etc/apk/keys/nginx_signing.rsa.pub; fi \
+<<<<<<< HEAD
 # remove the last line with the packages repos in the repositories file
     && sed -i '$ d' /etc/apk/repositories \
+=======
+>>>>>>> master
 # Bring in gettext so we can get `envsubst`, then throw
 # the rest away. To do this, we need to install `gettext`
 # then move `envsubst` out of the way so `gettext` can
