@@ -101,7 +101,10 @@ RUN set -x \
     && apk add --no-cache tzdata \
 # forward request and error logs to docker log collector
     && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+    && ln -sf /dev/stderr /var/log/nginx/error.log \
+# make default server listen on ipv6
+    && sed -i -E 's,listen       80;,listen       80;\n    listen  [::]:80;,' \
+        /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
