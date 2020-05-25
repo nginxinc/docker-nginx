@@ -91,14 +91,12 @@ RUN set -x \
     && if [ -n "$tempDir" ]; then \
         apt-get purge -y --auto-remove \
         && rm -rf "$tempDir" /etc/apt/sources.list.d/temp.list; \
-    fi
-
+    fi \
 # forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
-
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log \
 # make default server listen on ipv6
-RUN sed -i -E 's,listen       80;,listen       80;\n    listen  [::]:80;,' \
+    && sed -i -E 's,listen       80;,listen       80;\n    listen  [::]:80;,' \
         /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
