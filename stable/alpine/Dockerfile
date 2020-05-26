@@ -106,7 +106,12 @@ RUN set -x \
     && ln -sf /dev/stderr /var/log/nginx/error.log \
 # make default server listen on ipv6
     && sed -i -E 's,listen       80;,listen       80;\n    listen  [::]:80;,' \
-        /etc/nginx/conf.d/default.conf
+        /etc/nginx/conf.d/default.conf \
+# create a docker-entrypoint.d directory
+    && mkdir /docker-entrypoint.d
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 80
 
