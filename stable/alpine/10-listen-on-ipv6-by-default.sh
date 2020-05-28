@@ -7,20 +7,18 @@ ME=$(basename $0)
 DEFAULT_CONF_FILE="etc/nginx/conf.d/default.conf"
 
 # check if we have ipv6 available
-if [ -f "/proc/net/if_inet6" ]; then
-    continue
-else
+if [ ! -f "/proc/net/if_inet6" ]; then
     echo "$ME: ipv6 not available, exiting" 1>&2
     exit 0
 fi
 
-
-if [ -f "/$DEFAULT_CONF_FILE" ]; then
-    continue
-else
+if [ ! -f "/$DEFAULT_CONF_FILE" ]; then
     echo "$ME: /$DEFAULT_CONF_FILE is not a file or does not exist, exiting" 1>&2
     exit 0
 fi
+
+# check if the file is already modified, e.g. on a container restart
+grep -q "listen  \[::]\:80;" /$DEFAULT_CONF_FILE && { echo "$ME: IPv6 listen already enabled, exiting"; exit 0; }
 
 if [ -f "/etc/os-release" ]; then
     . /etc/os-release
@@ -34,7 +32,7 @@ echo "$ME: Getting the checksum of /$DEFAULT_CONF_FILE"
 case "$ID" in
     "debian")
         CHECKSUM=$(dpkg-query --show --showformat='${Conffiles}\n' nginx | grep $DEFAULT_CONF_FILE | cut -d' ' -f 3)
-        echo "$CHECKSUM /$DEFAULT_CONF_FILE" | md5sum -c - >/dev/null 2>&1 || {
+        echo "$CHECKSUM  /$DEFAULT_CONF_FILE" | md5sum -c - >/dev/null 2>&1 || {
             echo "$ME: /$DEFAULT_CONF_FILE differs from the packaged version, exiting" 1>&2
             exit 0
         }
