@@ -16,7 +16,7 @@ auto_envsubst() {
     echo "$ME: ERROR: $template_dir exists, but $output_dir is not writable, exiting" 1>&2
     return 0
   fi
-  for template in $(find "$template_dir" -follow -name "*$suffix"); do
+  find "$template_dir" -follow -type f -name "*$suffix" -print | while read -r template; do
     relative_path="${template#$template_dir/}"
     output_path="$output_dir/${relative_path%$suffix}"
     subdir=$(dirname "$relative_path")
