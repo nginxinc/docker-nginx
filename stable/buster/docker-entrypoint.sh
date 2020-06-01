@@ -3,28 +3,29 @@
 
 set -e
 
-if [ "$1" = "nginx" ]; then
-    if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -print -quit 2>/dev/null | /bin/grep -q .; then
-        echo "$0: /docker-entrypoint.d/ is not empty, will attempt to perform an initial configuration"
+if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
+    if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
+        echo "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
 
         echo "$0: Looking for shell scripts in /docker-entrypoint.d/"
-        for f in $(/usr/bin/find /docker-entrypoint.d/ -type f -name "*.sh" -executable | sort -n); do
-            echo "$0: Launching $f";
-            "$f"
+        find "/docker-entrypoint.d/" -follow -type f -print | sort -n | while read -r f; do
+            case "$f" in
+                *.sh)
+                    if [ -x "$f" ]; then
+                        echo "$0: Launching $f";
+                        "$f"
+                    else
+                        # warn on shell scripts without exec bit
+                        echo "$0: Ignoring $f, not executable";
+                    fi
+                    ;;
+                *) echo "$0: Ignoring $f";;
+            esac
         done
 
-        # warn on shell scripts without exec bit
-        for f in $(/usr/bin/find /docker-entrypoint.d/ -type f -name "*.sh" -not -executable); do
-            echo "$0: Ignoring $f, not executable";
-        done
-        # warn on filetypes we don't know what to do with
-        for f in $(/usr/bin/find /docker-entrypoint.d/ -type f -not -name "*.sh"); do
-            echo "$0: Ignoring $f";
-        done
-
-        echo "$0: Initial configuration complete; ready for start up"
+        echo "$0: Configuration complete; ready for start up"
     else
-        echo "$0: /docker-entrypoint.d/ is empty, skipping initial configuration"
+        echo "$0: No files found in /docker-entrypoint.d/, skipping configuration"
     fi
 fi
 
