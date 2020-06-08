@@ -18,10 +18,10 @@ if [ ! -f "/$DEFAULT_CONF_FILE" ]; then
 fi
 
 # check if the file can be modified, e.g. not on a r/o filesystem
-touch /$DEFAULT_CONF_FILE 2>/dev/null || { echo "$ME: Can not modify /$DEFAULT_CONF_FILE (read-only file system?), exiting"; exit 0; }
+touch /$DEFAULT_CONF_FILE 2>/dev/null || { echo >&3 "$ME: Can not modify /$DEFAULT_CONF_FILE (read-only file system?), exiting"; exit 0; }
 
 # check if the file is already modified, e.g. on a container restart
-grep -q "listen  \[::]\:80;" /$DEFAULT_CONF_FILE && { echo "$ME: IPv6 listen already enabled, exiting"; exit 0; }
+grep -q "listen  \[::]\:80;" /$DEFAULT_CONF_FILE && { echo >&3 "$ME: IPv6 listen already enabled, exiting"; exit 0; }
 
 if [ -f "/etc/os-release" ]; then
     . /etc/os-release
@@ -30,7 +30,7 @@ else
     exit 0
 fi
 
-echo "$ME: Getting the checksum of /$DEFAULT_CONF_FILE"
+echo >&3 "$ME: Getting the checksum of /$DEFAULT_CONF_FILE"
 
 case "$ID" in
     "debian")
@@ -56,6 +56,6 @@ esac
 # enable ipv6 on default.conf listen sockets
 sed -i -E 's,listen       80;,listen       80;\n    listen  [::]:80;,' /$DEFAULT_CONF_FILE
 
-echo "$ME: Enabled listen on IPv6 in /$DEFAULT_CONF_FILE"
+echo >&3 "$ME: Enabled listen on IPv6 in /$DEFAULT_CONF_FILE"
 
 exit 0
