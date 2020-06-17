@@ -18,7 +18,7 @@ if [ ! -f "/$DEFAULT_CONF_FILE" ]; then
 fi
 
 # check if the file can be modified, e.g. not on a r/o filesystem
-touch /$DEFAULT_CONF_FILE 2>/dev/null || { echo >&3 "$ME: Can not modify /$DEFAULT_CONF_FILE (read-only file system?), exiting"; exit 0; }
+touch /$DEFAULT_CONF_FILE 2>/dev/null || { echo "$ME: Can not modify /$DEFAULT_CONF_FILE (read-only file system?), exiting" >1&2; exit 0; }
 
 # check if the file is already modified, e.g. on a container restart
 grep -q "listen  \[::]\:80;" /$DEFAULT_CONF_FILE && { echo >&3 "$ME: IPv6 listen already enabled, exiting"; exit 0; }
