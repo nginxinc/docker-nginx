@@ -3,7 +3,7 @@ FROM alpine:3.11
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION 1.18.0
-ENV NJS_VERSION   0.4.0
+ENV NJS_VERSION   0.4.2
 ENV PKG_RELEASE   1
 
 RUN set -x \
@@ -64,7 +64,7 @@ RUN set -x \
                 && cd ${tempDir} \
                 && hg clone https://hg.nginx.org/pkg-oss \
                 && cd pkg-oss \
-                && hg up -r 474 \
+                && hg up -r 489 \
                 && cd alpine \
                 && make all \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
