@@ -13,7 +13,7 @@ auto_envsubst() {
   defined_envs=$(printf '${%s} ' $(env | cut -d= -f1))
   [ -d "$template_dir" ] || return 0
   if [ ! -w "$output_dir" ]; then
-    echo "$ME: ERROR: $template_dir exists, but $output_dir is not writable" 1>&2
+    echo >&3 "$ME: ERROR: $template_dir exists, but $output_dir is not writable"
     return 0
   fi
   find "$template_dir" -follow -type f -name "*$suffix" -print | while read -r template; do
