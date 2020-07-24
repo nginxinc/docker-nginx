@@ -59,7 +59,7 @@ RUN nginver=$(nginx -v 2>&1 | awk -F / '{ print $2 }') && \
     wget http://nginx.org/download/nginx-${nginver}.tar.gz && \
     tar zxvf nginx-${nginver}.tar.gz && \
     cd nginx-$nginver && \
-    ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx --add-dynamic-module=../headers-more-nginx-module-0.33 && \
+    ./configure --with-compat --with-http_realip_module --add-dynamic-module=../ModSecurity-nginx --add-dynamic-module=../headers-more-nginx-module-0.33 && \
     make modules && \
     cp objs/*.so /etc/nginx/modules
 
