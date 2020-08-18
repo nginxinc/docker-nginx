@@ -6,7 +6,7 @@ FROM ubuntu:18.04
 # https://nginx.org/en/linux_packages.html#Ubuntu
 #
 RUN apt-get update && \
-    apt -y install curl gnupg2 ca-certificates lsb-release git less libyajl-dev && \
+    apt -y install curl gnupg2 ca-certificates lsb-release git less libyajl-dev logrotate && \
     echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list && \
     echo "deb http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
