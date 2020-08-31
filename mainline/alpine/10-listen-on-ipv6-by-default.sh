@@ -43,7 +43,7 @@ case "$ID" in
     "alpine")
         CHECKSUM=$(apk manifest nginx 2>/dev/null| grep $DEFAULT_CONF_FILE | cut -d' ' -f 1 | cut -d ':' -f 2)
         echo "$CHECKSUM  /$DEFAULT_CONF_FILE" | sha1sum -c - >/dev/null 2>&1 || {
-            echo >&3 "$ME: error: /$DEFAULT_CONF_FILE differs from the packages version"
+            echo >&3 "$ME: error: /$DEFAULT_CONF_FILE differs from the packaged version"
             exit 0
         }
         ;;
