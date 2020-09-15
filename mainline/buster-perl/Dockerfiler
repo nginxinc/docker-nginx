@@ -2,17 +2,17 @@ FROM debian:buster-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.18.0
+ENV NGINX_VERSION   1.19.2
 ENV NJS_VERSION     0.4.3
 ENV PKG_RELEASE     1~buster
 
 #Set nginx gid/uid#
-ARG nginx_gid=101
+ARG nginx_guid=101
 ARG nginx_uid=101
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
-    && addgroup --system --gid $nginx_gid nginx \
+    && addgroup --system --gid $nginx_guid nginx \
     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid $nginx_uid nginx \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \
@@ -42,13 +42,13 @@ RUN set -x \
     && case "$dpkgArch" in \
         amd64|i386) \
 # arches officialy built by upstream
-            echo "deb https://nginx.org/packages/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
+            echo "deb https://nginx.org/packages/mainline/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
             && apt-get update \
             ;; \
         *) \
 # we're on an architecture upstream doesn't officially build for
 # let's build binaries from the published source packages
-            echo "deb-src https://nginx.org/packages/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
+            echo "deb-src https://nginx.org/packages/mainline/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
             \
 # new directory for storing sources and .deb files
             && tempDir="$(mktemp -d)" \

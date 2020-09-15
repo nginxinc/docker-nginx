@@ -6,10 +6,15 @@ ENV NGINX_VERSION 1.18.0
 ENV NJS_VERSION   0.4.3
 ENV PKG_RELEASE   1
 
+#Set nginx gid/uid#
+ARG nginx_gid=101
+ARG nginx_uid=101
+
+
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
-    && addgroup -g 101 -S nginx \
-    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx \
+    && addgroup -g $nginx_gid -S nginx \
+    && adduser -S -D -H -u $nginx_uid -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx \
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-r${PKG_RELEASE} \

@@ -7,12 +7,12 @@ ENV NJS_VERSION     0.4.3
 ENV PKG_RELEASE     1~buster
 
 #Set nginx gid/uid#
-ARG nginx_gid=101
+ARG nginx_guid=101
 ARG nginx_uid=101
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
-    && addgroup --system --gid $nginx_gid nginx \
+    && addgroup --system --gid $nginx_guid nginx \
     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid $nginx_uid nginx \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \

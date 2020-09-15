@@ -6,10 +6,14 @@ ENV NGINX_VERSION   1.18.0
 ENV NJS_VERSION     0.4.3
 ENV PKG_RELEASE     1~buster
 
+#Change NGNIX guid/uid#
+ARG nginx_gid=5000
+ARG nginx_uid=5000
+
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
-    && addgroup --system --gid 101 nginx \
-    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 101 nginx \
+    && addgroup --system --gid $nginx_gid nginx \
+    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid $nginx_uid nginx \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \
     && \
