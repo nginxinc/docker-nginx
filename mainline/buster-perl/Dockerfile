@@ -2,8 +2,8 @@ FROM debian:buster-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.19.2
-ENV NJS_VERSION     0.4.3
+ENV NGINX_VERSION   1.19.3
+ENV NJS_VERSION     0.4.4
 ENV PKG_RELEASE     1~buster
 
 RUN set -x \
