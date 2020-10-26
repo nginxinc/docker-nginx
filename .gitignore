@@ -9,7 +9,7 @@ Secrets/
 *.zip
 .DS_Store
 
-# Python related 
+# Python related
 *__pycache__
 *.pytest_cache
 *.cache

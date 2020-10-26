@@ -12,7 +12,7 @@ export GEN3_HOME
 help() {
       cat - <<EOM
 bash runTest.sh nginx-docker-image
-NOTE: 
+NOTE:
     - point GEN3_HOME at cloud-automation/
     - install CIS Assessor-CLI/ under $ASSESSOR_PATH
       or change the ASSESSOR_PATH environment variable
@@ -73,5 +73,5 @@ echo nginx
 echo '(apt install openjdk-11-jre -y) > /dev/null 2>&1'
 echo cd /mnt/Assessor-CLI
 echo bash ./Assessor-CLI.sh -h
-echo bash ./Assessor-CLI.sh -b benchmarks/CIS_NGINX_Benchmark_v1.1.0-oval.xml 
-echo bash ./Assessor-CLI.sh -b benchmarks/CIS_NGINX_Benchmark_v1.1.0-xccdf.xml 
+echo bash ./Assessor-CLI.sh -b benchmarks/CIS_NGINX_Benchmark_v1.1.0-oval.xml
+echo bash ./Assessor-CLI.sh -b benchmarks/CIS_NGINX_Benchmark_v1.1.0-xccdf.xml

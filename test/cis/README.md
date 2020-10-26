@@ -22,7 +22,7 @@ $ sudo bash ./Assessor-CLI.sh -vvvvv -b benchmarks/CIS_NGINX_Benchmark_v1.1.0-xc
 Verifying application
 
 Obtaining session connection --> Local
-Connection established.  
+Connection established.
 An error occurred creating the session for null@null:0.  Ensure all session configuration information is correct.
 
 Unable to connect session configuration --> null@null:0

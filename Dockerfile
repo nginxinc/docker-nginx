@@ -46,7 +46,7 @@ RUN git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLa
 # download the modsecurity nginx connector
 #   https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/#    https://drive.google.com/drive/u/1/folders/1ky_9gL_stSEHupRty6EjFBefRPW4qJGj
 #
-# 
+#
 RUN wget https://github.com/openresty/headers-more-nginx-module/archive/v0.33.tar.gz && \
 	tar xvzf v0.33.tar.gz && \
   git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
