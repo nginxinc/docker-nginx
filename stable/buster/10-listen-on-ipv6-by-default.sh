@@ -21,7 +21,7 @@ fi
 touch /$DEFAULT_CONF_FILE 2>/dev/null || { echo >&3 "$ME: error: can not modify /$DEFAULT_CONF_FILE (read-only file system?)"; exit 0; }
 
 # check if the file is already modified, e.g. on a container restart
-grep -q "listen  \[::]\:80;" /$DEFAULT_CONF_FILE && { echo >&3 "$ME: error: IPv6 listen already enabled"; exit 0; }
+grep -q "listen  \[::]\:80;" /$DEFAULT_CONF_FILE && { echo >&3 "$ME: info: IPv6 listen already enabled"; exit 0; }
 
 if [ -f "/etc/os-release" ]; then
     . /etc/os-release
@@ -36,14 +36,14 @@ case "$ID" in
     "debian")
         CHECKSUM=$(dpkg-query --show --showformat='${Conffiles}\n' nginx | grep $DEFAULT_CONF_FILE | cut -d' ' -f 3)
         echo "$CHECKSUM  /$DEFAULT_CONF_FILE" | md5sum -c - >/dev/null 2>&1 || {
-            echo >&3 "$ME: error: /$DEFAULT_CONF_FILE differs from the packaged version"
+            echo >&3 "$ME: info: /$DEFAULT_CONF_FILE differs from the packaged version"
             exit 0
         }
         ;;
     "alpine")
         CHECKSUM=$(apk manifest nginx 2>/dev/null| grep $DEFAULT_CONF_FILE | cut -d' ' -f 1 | cut -d ':' -f 2)
         echo "$CHECKSUM  /$DEFAULT_CONF_FILE" | sha1sum -c - >/dev/null 2>&1 || {
-            echo >&3 "$ME: error: /$DEFAULT_CONF_FILE differs from the packaged version"
+            echo >&3 "$ME: info: /$DEFAULT_CONF_FILE differs from the packaged version"
             exit 0
         }
         ;;
