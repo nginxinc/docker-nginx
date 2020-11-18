@@ -30,7 +30,7 @@ RUN set -x \
     && nginxPackages="%%PACKAGES%%
     " \
     && case "$dpkgArch" in \
-        amd64|i386) \
+        amd64|i386|arm64) \
 # arches officialy built by upstream
             echo "deb %%PACKAGEREPO%% %%DEBIAN_VERSION%% nginx" >> /etc/apt/sources.list.d/nginx.list \
             && apt-get update \

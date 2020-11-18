@@ -41,7 +41,7 @@ RUN set -x \
         nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${PKG_RELEASE} \
     " \
     && case "$dpkgArch" in \
-        amd64|i386) \
+        amd64|i386|arm64) \
 # arches officialy built by upstream
             echo "deb https://nginx.org/packages/mainline/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
             && apt-get update \
