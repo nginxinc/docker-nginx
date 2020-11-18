@@ -9,10 +9,9 @@ aliases=(
 
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
-base=buster
+base=debian
 
-versions=( */ )
-versions=( "${versions[@]%/}" )
+versions=( mainline stable )
 
 # get the most recent commit which modified any of "$@"
 fileCommit() {
@@ -69,7 +68,7 @@ for version in "${versions[@]}"; do
 		Directory: $version/$base
 	EOE
 
-	for variant in buster-perl; do
+	for variant in debian-perl; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
