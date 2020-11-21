@@ -117,8 +117,6 @@ COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
 COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-EXPOSE 80
-
 STOPSIGNAL SIGTERM
 
 CMD ["nginx", "-g", "daemon off;"]
