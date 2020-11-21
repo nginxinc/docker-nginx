@@ -1,14 +1,24 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.7
+  pre_build:
     commands:
-      - pwd
-      - ls
+      - echo "##### aws ecr login"
+      - $(aws ecr get-login --no-inculde-email --region $AWS_DEFAULT_REGION)
   build:
     commands:
+      - echo "##### pwd"
       - pwd
+      - echo "##### ls"
       - ls
+      - echo "##### cd"
+      - cd "mainline/alpine"
+      - echo "##### docker build"
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - echo "##### docker tag"
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo "##### docker push"
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
