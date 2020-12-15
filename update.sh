@@ -10,7 +10,7 @@ declare branches=(
 )
 
 declare -A nginx=(
-    [mainline]='1.19.5'
+    [mainline]='1.19.6'
     [stable]='1.18.0'
 )
 
