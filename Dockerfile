@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM quay.io/cdis/ubuntu:18.04
 
 #
 # point at nginx apt package repo, and install nginx,
