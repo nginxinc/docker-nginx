@@ -3,7 +3,7 @@
 It's possible to extend a mainline image with third-party modules either from
 your own instuctions following a simple filesystem layout/syntax using
 `build_module.sh` helper script, or failing back to package sources from
-`https://hg.nginx.org/pkg-oss`.
+[pkg-oss](https://hg.nginx.org/pkg-oss).
 
 ## Usage
 
@@ -30,23 +30,25 @@ are available from `pkg-oss` repository:
 ```
 /pkg-oss $ LC_ALL=C make -C debian list-all-modules
 make: Entering directory '/pkg-oss/debian'
+auth-spnego             1.1.0-1
 brotli                  1.0.0-1
 encrypted-session       0.08-1
-geoip                   1.19.6-1
+fips-check              0.1-1
+geoip                   1.19.7-1
 geoip2                  3.3-1
 headers-more            0.33-1
-image-filter            1.19.6-1
+image-filter            1.19.7-1
 lua                     0.10.19-1
-modsecurity             1.0.1-1
+modsecurity             1.0.1-2
 ndk                     0.3.1-1
-njs                     0.5.0-1
+njs                     0.5.1-1
 opentracing             0.10.0-1
 passenger               6.0.6-1
-perl                    1.19.6-1
+perl                    1.19.7-1
 rtmp                    1.2.1-1
 set-misc                0.32-1
 subs-filter             0.6.4-1
-xslt                    1.19.6-1
+xslt                    1.19.7-1
 make: Leaving directory '/pkg-oss/debian'
 ```
 
@@ -81,3 +83,88 @@ Note that we can not provide any support for those modifications and in no way
 guarantee they will work as nice as a build without third-party modules.  If
 you encounter any issues running your image with the modules enabled, please
 reproduce with a vanilla image first.
+
+## Examples
+
+### docker-compose with pre-packaged modules
+
+If desired modules are already packaged in
+[pkg-oss](https://hg.nginx.org/pkg-oss/) - e.g. `debian/Makefile.module-*`
+exists for a given module, you can use this example.
+
+1. Create a directory for your project:
+
+```
+mkdir myapp
+cd myapp
+````
+
+2.  Populate the build context for a custom nginx image:
+
+```
+mkdir my-nginx
+curl -o my-nginx/Dockerfile https://raw.githubusercontent.com/nginxinc/docker-nginx/master/modules/Dockerfile
+```
+
+3. Create a `docker-compose.yml` file:
+
+```
+cat > docker-compose.yml << __EOF__
+version: "3.3"
+services:
+  web:
+    build:
+      context: ./my-nginx/
+      args:
+        ENABLED_MODULES: ndk lua
+    image: my-nginx-with-lua:v1
+    ports:
+      - "80:8000"
+__EOF__
+```
+
+Now, running `docker-compose up --build -d` will build the image and run the application for you.
+
+### docker-compose with a non-packaged module
+
+If a needed module is not available via `pkg-oss`, you can use this example.
+
+We're going to build the image with [ngx_cache_purge](https://github.com/FRiCKLE/ngx_cache_purge) module.
+
+The steps are similar to a previous example, with a notable difference of
+providing a URL to fetch the module source code from.
+
+1. Create a directory for your project:
+
+```
+mkdir myapp-cache
+cd myapp-cache
+````
+
+2.  Populate the build context for a custom nginx image:
+
+```
+mkdir my-nginx
+curl -o my-nginx/Dockerfile https://raw.githubusercontent.com/nginxinc/docker-nginx/master/modules/Dockerfile
+mkdir my-nginx/cachepurge
+echo "https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz" > my-nginx/cachepurge/source
+```
+
+3. Create a `docker-compose.yml` file:
+
+```
+cat > docker-compose.yml << __EOF__
+version: "3.3"
+services:
+  web:
+    build:
+      context: ./my-nginx/
+      args:
+        ENABLED_MODULES: cachepurge
+    image: my-nginx-with-cachepurge:v1
+    ports:
+      - "80:8080"
+__EOF__
+```
+
+Now, running `docker-compose up --build -d` will build the image and run the application for you.
