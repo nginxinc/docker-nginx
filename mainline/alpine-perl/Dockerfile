@@ -7,8 +7,8 @@ FROM alpine:3.13
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.19.7
-ENV NJS_VERSION   0.5.1
+ENV NGINX_VERSION 1.19.8
+ENV NJS_VERSION   0.5.2
 ENV PKG_RELEASE   1
 
 RUN set -x \

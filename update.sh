@@ -10,11 +10,11 @@ declare branches=(
 )
 
 declare -A nginx=(
-    [mainline]='1.19.7'
+    [mainline]='1.19.8'
     [stable]='1.18.0'
 )
 
-defaultnjs='0.5.1'
+defaultnjs='0.5.2'
 declare -A njs=(
     [stable]='0.4.4'
 )
