@@ -21,7 +21,7 @@ get_cpuset() {
   cpusetroot=$1
   cpusetfile=$2
   ncpu=0
-  [ -f "$cpusetroot/$cpusetfile" ] || return
+  [ -f "$cpusetroot/$cpusetfile" ] || return 1
   for token in $( tr ',' ' ' < "$cpusetroot/$cpusetfile" ); do
     case "$token" in
       *-*)
@@ -39,27 +39,27 @@ get_cpuset() {
 get_quota() {
   cpuroot=$1
   ncpu=0
-  [ -f "$cpuroot/cpu.cfs_quota_us" ] || return
-  [ -f "$cpuroot/cpu.cfs_period_us" ] || return
+  [ -f "$cpuroot/cpu.cfs_quota_us" ] || return 1
+  [ -f "$cpuroot/cpu.cfs_period_us" ] || return 1
   cfs_quota=$( cat "$cpuroot/cpu.cfs_quota_us" )
   cfs_period=$( cat "$cpuroot/cpu.cfs_period_us" )
-  [ "$cfs_quota" = "-1" ] && return
-  [ "$cfs_period" = "0" ] && return
+  [ "$cfs_quota" = "-1" ] && return 1
+  [ "$cfs_period" = "0" ] && return 1
   ncpu=$( ceildiv "$cfs_quota" "$cfs_period" )
-  [ "$ncpu" -gt 0 ] || return
+  [ "$ncpu" -gt 0 ] || return 1
   echo "$ncpu"
 }
 
 get_quota_v2() {
   cpuroot=$1
   ncpu=0
-  [ -f "$cpuroot/cpu.max" ] || return
+  [ -f "$cpuroot/cpu.max" ] || return 1
   cfs_quota=$( cut -d' ' -f 1 < "$cpuroot/cpu.max" )
   cfs_period=$( cut -d' ' -f 2 < "$cpuroot/cpu.max" )
-  [ "$cfs_quota" = "max" ] && return
-  [ "$cfs_period" = "0" ] && return
+  [ "$cfs_quota" = "max" ] && return 1
+  [ "$cfs_period" = "0" ] && return 1
   ncpu=$( ceildiv "$cfs_quota" "$cfs_period" )
-  [ "$ncpu" -gt 0 ] || return
+  [ "$ncpu" -gt 0 ] || return 1
   echo "$ncpu"
 }
 
@@ -69,8 +69,8 @@ get_cgroup_v1_path() {
   foundroot=
   mountpoint=
 
-  [ -r "/proc/self/mountinfo" ] || return
-  [ -r "/proc/self/cgroup" ] || return
+  [ -r "/proc/self/mountinfo" ] || return 1
+  [ -r "/proc/self/cgroup" ] || return 1
 
   while IFS= read -r line; do
     case "$needle" in
@@ -78,6 +78,7 @@ get_cgroup_v1_path() {
         case "$line" in
           *cpuset*)
             found=$( echo "$line" | cut -d ' ' -f 4,5 )
+            break
             ;;
         esac
         ;;
@@ -87,6 +88,7 @@ get_cgroup_v1_path() {
             ;;
           *cpu,cpuacct*|*cpuacct,cpu|*cpuacct*|*cpu*)
             found=$( echo "$line" | cut -d ' ' -f 4,5 )
+            break
             ;;
         esac
     esac
@@ -101,6 +103,7 @@ __EOF__
         case "$controller" in
           cpuset)
             mountpoint=$( echo "$line" | cut -d: -f 3 )
+            break
             ;;
         esac
         ;;
@@ -108,6 +111,7 @@ __EOF__
         case "$controller" in
           cpu,cpuacct|cpuacct,cpu|cpuacct|cpu)
             mountpoint=$( echo "$line" | cut -d: -f 3 )
+            break
             ;;
         esac
         ;;
@@ -132,8 +136,8 @@ get_cgroup_v2_path() {
   foundroot=
   mountpoint=
 
-  [ -r "/proc/self/mountinfo" ] || return
-  [ -r "/proc/self/cgroup" ] || return
+  [ -r "/proc/self/mountinfo" ] || return 1
+  [ -r "/proc/self/cgroup" ] || return 1
 
   while IFS= read -r line; do
     found=$( echo "$line" | cut -d ' ' -f 4,5 )
@@ -149,7 +153,7 @@ __EOF__
 
   case "${found%% *}" in
     "")
-      return
+      return 1
       ;;
     "/")
       foundroot="${found##* }$mountpoint"
@@ -167,20 +171,10 @@ ncpu_quota=
 ncpu_cpuset_v2=
 ncpu_quota_v2=
 
-cpuset=$( get_cgroup_v1_path "cpuset" )
-[ "$cpuset" ] && ncpu_cpuset=$( get_cpuset "$cpuset" "cpuset.effective_cpus" )
-[ "$ncpu_cpuset" ] || ncpu_cpuset=$ncpu_online
-
-cpu=$( get_cgroup_v1_path "cpu" )
-[ "$cpu" ] && ncpu_quota=$( get_quota "$cpu" )
-[ "$ncpu_quota" ] || ncpu_quota=$ncpu_online
-
-cgroup_v2=$( get_cgroup_v2_path )
-[ "$cgroup_v2" ] && ncpu_cpuset_v2=$( get_cpuset "$cgroup_v2" "cpuset.cpus.effective" )
-[ "$ncpu_cpuset_v2" ] || ncpu_cpuset_v2=$ncpu_online
-
-[ "$cgroup_v2" ] && ncpu_quota_v2=$( get_quota_v2 "$cgroup_v2" )
-[ "$ncpu_quota_v2" ] || ncpu_quota_v2=$ncpu_online
+cpuset=$( get_cgroup_v1_path "cpuset" ) && ncpu_cpuset=$( get_cpuset "$cpuset" "cpuset.effective_cpus" ) || ncpu_cpuset=$ncpu_online
+cpu=$( get_cgroup_v1_path "cpu" ) && ncpu_quota=$( get_quota "$cpu" ) || ncpu_quota=$ncpu_online
+cgroup_v2=$( get_cgroup_v2_path ) && ncpu_cpuset_v2=$( get_cpuset "$cgroup_v2" "cpuset.cpus.effective" ) || ncpu_cpuset_v2=$ncpu_online
+cgroup_v2=$( get_cgroup_v2_path ) && ncpu_quota_v2=$( get_quota_v2 "$cgroup_v2" ) || ncpu_quota_v2=$ncpu_online
 
 ncpu=$( printf "%s\n%s\n%s\n%s\n%s\n" \
                "$ncpu_online" \
