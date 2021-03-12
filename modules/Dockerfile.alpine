@@ -47,9 +47,9 @@ RUN set -ex \
         elif make -C /pkg-oss/alpine list | grep -E "^$module\s+\d+" > /dev/null; then \
             echo "Building $module from pkg-oss sources"; \
             cd /pkg-oss/alpine; \
-            make abuild-module-$module BASE_VERSION=$NGINX_VERSION; \
+            make abuild-module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
             apk add $(. ./abuild-module-$module/APKBUILD; echo $makedepends;); \
-            make module-$module BASE_VERSION=$NGINX_VERSION; \
+            make module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
             find ~/packages -type f -name "*.apk" -exec mv -v {} /tmp/packages/ \;; \
         else \
             echo "Don't know how to build $module module, exiting"; \
