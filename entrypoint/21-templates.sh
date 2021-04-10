@@ -5,9 +5,9 @@ set -e
 ME=$(basename $0)
 
 auto_templates() {
-  local template_dir="${NGINX_TEMPLATE_DIR:-/etc/nginx/config}"
-  local suffix="${NGINX_TEMPLATE_SUFFIX:-.template}"
-  local output_dir="${NGINX_OUTPUT_DIR:-/etc/nginx/conf.d}"
+  local template_dir="${NGINX_TEMPLATES_DIR:-/etc/nginx/config}"
+  local suffix="${NGINX_TEMPLATES_SUFFIX:-.template}"
+  local output_dir="${NGINX_TEMPLATES_OUTPUT_DIR:-/etc/nginx/conf.d}"
 
   local template sedfile relative_path output_path subdir
   [ -d "$template_dir" ] || return 0
@@ -23,9 +23,9 @@ auto_templates() {
     subdir=$(dirname "$relative_path")
     # create a subdirectory where the template file exists
     mkdir -p "$output_dir/$subdir"
-	 cp "$template" "$output_path"
+    cp "$template" "$output_path"
     echo >&3 "$ME: Running sed on $template to $output_path"
-	 sed -f "$sedfile" -i "$output_path"
+    sed -f "$sedfile" -i "$output_path"
   done
   rm "$sedfile"
 }
