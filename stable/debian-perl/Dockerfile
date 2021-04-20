@@ -7,9 +7,9 @@ FROM debian:buster-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.18.0
-ENV NJS_VERSION     0.4.4
-ENV PKG_RELEASE     2~buster
+ENV NGINX_VERSION   1.20.0
+ENV NJS_VERSION     0.5.3
+ENV PKG_RELEASE     1~buster
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -38,7 +38,7 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
         nginx-module-perl=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-${PKG_RELEASE} \
+        nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${PKG_RELEASE} \
     " \
     && case "$dpkgArch" in \
         amd64|i386|arm64) \
