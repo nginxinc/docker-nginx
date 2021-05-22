@@ -62,6 +62,6 @@ ARG ENABLED_MODULES
 COPY --from=builder /tmp/packages /tmp/packages
 RUN set -ex \
     && for module in $ENABLED_MODULES; do \
-           apk add --no-cache --allow-untrusted /tmp/packages/nginx-module-${module}-${NGINX_VERSION}*.apk; \
+           apk add --no-cache --allow-untrusted /tmp/packages/nginx-module-$(echo $module | tr -dc '[[:alpha:]]')-${NGINX_VERSION}*.apk; \
        done \
     && rm -rf /tmp/packages

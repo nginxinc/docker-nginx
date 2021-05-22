@@ -65,6 +65,9 @@ echo
 0 directories, 3 files
 ```
 
+Note that the name of the directory needs to be named like the module that
+will be built.
+
 The scripts expect one file to always exist for a module you wish to build
 manually: `source`.  It should contain a link to a zip/tarball source code of a
 module you want to build.  In `build-deps` you can specify build dependencies
