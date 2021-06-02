@@ -14,7 +14,7 @@ RUN set -ex \
     && apk update \
     && apk add linux-headers openssl-dev pcre-dev zlib-dev openssl abuild \
                musl-dev libxslt libxml2-utils make mercurial gcc unzip git \
-               xz g++ \
+               xz g++ coreutils \
     # allow abuild as a root user \
     && printf "#!/bin/sh\\n/usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
     && chmod +x /usr/local/bin/abuild \
