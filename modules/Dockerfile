@@ -42,6 +42,7 @@ RUN set -ex \
                 /modules/$module/prebuild; \
             fi; \
             /pkg-oss/build_module.sh -v $NGINX_VERSION -f -y -o /tmp/packages -n $module $(cat /modules/$module/source); \
+            BUILT_MODULES="$BUILT_MODULES $(echo $module | tr '[A-Z]' '[a-z]' | tr -d '[/_\-\.\t ]')"; \
         elif make -C /pkg-oss/debian list | grep -P "^$module\s+\d" > /dev/null; then \
             echo "Building $module from pkg-oss sources"; \
             cd /pkg-oss/debian; \
@@ -49,18 +50,20 @@ RUN set -ex \
             mk-build-deps --install --tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes" debuild-module-$module/nginx-$NGINX_VERSION/debian/control; \
             make module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
             find ../../ -maxdepth 1 -mindepth 1 -type f -name "*.deb" -exec mv -v {} /tmp/packages/ \;; \
+            BUILT_MODULES="$BUILT_MODULES $module"; \
         else \
             echo "Don't know how to build $module module, exiting"; \
             exit 1; \
         fi; \
-    done
+    done \
+    && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
 FROM nginx:mainline
-ARG ENABLED_MODULES
 COPY --from=builder /tmp/packages /tmp/packages
 RUN set -ex \
     && apt update \
-    && for module in $ENABLED_MODULES; do \
+    && . /tmp/packages/modules.env \
+    && for module in $BUILT_MODULES; do \
            apt install --no-install-suggests --no-install-recommends -y /tmp/packages/nginx-module-${module}_${NGINX_VERSION}*.deb; \
        done \
     && rm -rf /tmp/packages \
