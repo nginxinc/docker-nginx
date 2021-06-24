@@ -10,11 +10,11 @@ declare branches=(
 )
 
 declare -A nginx=(
-    [mainline]='1.21.0'
-    [stable]='1.20.1'
+    [mainline]='1.21.1'
+    [stable]='1.20.2'
 )
 
-defaultnjs='0.5.3'
+defaultnjs='0.6.0'
 declare -A njs=(
 #    [stable]='0.4.4'
 )
@@ -29,7 +29,7 @@ declare -A debian=(
     #[stable]='stretch'
 )
 
-defaultalpine='3.13'
+defaultalpine='3.14'
 declare -A alpine=(
 #    [stable]='3.11'
 )
