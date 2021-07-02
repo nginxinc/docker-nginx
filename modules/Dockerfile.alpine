@@ -16,7 +16,7 @@ RUN set -ex \
                musl-dev libxslt libxml2-utils make mercurial gcc unzip git \
                xz g++ coreutils \
     # allow abuild as a root user \
-    && printf "#!/bin/sh\\n/usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
+    && printf "#!/bin/sh\\nSETFATTR=true /usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
     && chmod +x /usr/local/bin/abuild \
     && hg clone -r ${NGINX_VERSION}-${PKG_RELEASE} https://hg.nginx.org/pkg-oss/ \
     && cd pkg-oss \
