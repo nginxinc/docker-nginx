@@ -10,7 +10,7 @@ auto_envsubst() {
   local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
 
   local template defined_envs relative_path output_path subdir
-  defined_envs=$(printf '${%s} ' $(env -0 | cut -z -d= -f1 | tr -d "\0"))
+  defined_envs=$(cat /proc/self/environ | xargs -I{}  -0 -n1 sh -c 'echo "{}" | sed -n "1 s/^\([^=]*\)=.*$/\${\1} /p"');
   [ -d "$template_dir" ] || return 0
   if [ ! -w "$output_dir" ]; then
     echo >&3 "$ME: ERROR: $template_dir exists, but $output_dir is not writable"
