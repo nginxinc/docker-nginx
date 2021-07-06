@@ -10,13 +10,13 @@ declare branches=(
 )
 
 declare -A nginx=(
-    [mainline]='1.21.0'
+    [mainline]='1.21.1'
     [stable]='1.20.1'
 )
 
-defaultnjs='0.5.3'
+defaultnjs='0.6.1'
 declare -A njs=(
-#    [stable]='0.4.4'
+    [stable]='0.5.3'
 )
 
 defaultpkg='1'
@@ -29,9 +29,9 @@ declare -A debian=(
     #[stable]='stretch'
 )
 
-defaultalpine='3.13'
+defaultalpine='3.14'
 declare -A alpine=(
-#    [stable]='3.11'
+    [stable]='3.13'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the

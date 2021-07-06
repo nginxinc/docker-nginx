@@ -3,12 +3,12 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM alpine:3.13
+FROM alpine:3.14
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.21.0
-ENV NJS_VERSION   0.5.3
+ENV NGINX_VERSION 1.21.1
+ENV NJS_VERSION   0.6.1
 ENV PKG_RELEASE   1
 
 RUN set -x \
