@@ -185,4 +185,7 @@ ncpu=$( printf "%s\n%s\n%s\n%s\n%s\n" \
                | sort -n \
                | head -n 1 )
 
+# NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE has higher priority if it is a positive integer
+[ "${NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE:-0}" -gt 0 ] 2>/dev/null && ncpu=${NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE}
+
 sed -i.bak -r 's/^(worker_processes)(.*)$/# Commented out by '"$ME"' on '"$(date)"'\n#\1\2\n\1 '"$ncpu"';/' /etc/nginx/nginx.conf
