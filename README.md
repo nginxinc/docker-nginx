@@ -23,5 +23,6 @@ Currently Added Modules:
 
 
 The full readme is generated over in [docker-library/docs](https://github.com/docker-library/docs),
-specificially in [docker-library/docs/nginx](https://github.com/docker-library/docs/tree/master/nginx).
+specifically in [docker-library/docs/nginx](https://github.com/docker-library/docs/tree/master/nginx).
 
+The changelog for NGINX releases is available at [nginx.org changes page](https://nginx.org/en/CHANGES).
