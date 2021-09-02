@@ -3,6 +3,8 @@
 
 set -e
 
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
     exec 3>&1
 else
@@ -10,11 +12,11 @@ else
 fi
 
 if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
-    if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
+    if find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
         echo >&3 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
 
         echo >&3 "$0: Looking for shell scripts in /docker-entrypoint.d/"
-        /usr/bin/find "/docker-entrypoint.d/" -follow -type f -print | sort -V | while read -r f; do
+        find "/docker-entrypoint.d/" -follow -type f -print | sort -V | while read -r f; do
             case "$f" in
                 *.sh)
                     if [ -x "$f" ]; then
