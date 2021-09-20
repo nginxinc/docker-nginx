@@ -24,9 +24,9 @@ declare -A pkg=(
 #    [stable]=2
 )
 
-defaultdebian='buster'
+defaultdebian='bullseye'
 declare -A debian=(
-    #[stable]='stretch'
+     [stable]='buster'
 )
 
 defaultalpine='3.14'
