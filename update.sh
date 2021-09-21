@@ -21,12 +21,12 @@ declare -A njs=(
 
 defaultpkg='1'
 declare -A pkg=(
-#    [stable]=2
+    #    [stable]=2
 )
 
 defaultdebian='bullseye'
 declare -A debian=(
-     [stable]='buster'
+    [stable]='buster'
 )
 
 defaultalpine='3.14'
@@ -43,26 +43,28 @@ declare -A rev=(
 )
 
 get_packages() {
-    local distro="$1"; shift;
-    local branch="$1"; shift;
+    local distro="$1"
+    shift
+    local branch="$1"
+    shift
     local perl=
     local r=
     local sep=
 
     case "$distro:$branch" in
-        alpine*:*)
-            r="r"
-            sep="."
-            ;;
-        debian*:*)
-            sep="+"
-         ;;
+    alpine*:*)
+        r="r"
+        sep="."
+        ;;
+    debian*:*)
+        sep="+"
+        ;;
     esac
 
     case "$distro" in
-        *-perl)
-            perl="nginx-module-perl"
-            ;;
+    *-perl)
+        perl="nginx-module-perl"
+        ;;
     esac
 
     echo -n ' \\\n'
@@ -75,8 +77,10 @@ get_packages() {
 }
 
 get_packagerepo() {
-    local distro="${1%-perl}"; shift;
-    local branch="$1"; shift;
+    local distro="${1%-perl}"
+    shift
+    local branch="$1"
+    shift
 
     [ "$branch" = "mainline" ] && branch="$branch/" || branch=""
 
@@ -84,8 +88,10 @@ get_packagerepo() {
 }
 
 get_packagever() {
-    local distro="${1%-perl}"; shift;
-    local branch="$1"; shift;
+    local distro="${1%-perl}"
+    shift
+    local branch="$1"
+    shift
     local suffix=
 
     [ "${distro}" = "debian" ] && suffix="~${debianver}"
@@ -94,7 +100,7 @@ get_packagever() {
 }
 
 generated_warning() {
-    cat << __EOF__
+    cat <<__EOF__
 #
 # NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
 #
@@ -106,8 +112,7 @@ __EOF__
 for branch in "${branches[@]}"; do
     for variant in \
         alpine{,-perl} \
-        debian{,-perl} \
-    ; do
+        debian{,-perl}; do
         echo "$branch: $variant"
         dir="$branch/$variant"
         variant="$(basename "$variant")"
@@ -115,7 +120,10 @@ for branch in "${branches[@]}"; do
         [ -d "$dir" ] || continue
 
         template="Dockerfile-${variant%-perl}.template"
-        { generated_warning; cat "$template"; } > "$dir/Dockerfile"
+        {
+            generated_warning
+            cat "$template"
+        } >"$dir/Dockerfile"
 
         debianver="${debian[$branch]:-$defaultdebian}"
         alpinever="${alpine[$branch]:-$defaultalpine}"
