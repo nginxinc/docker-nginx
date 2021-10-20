@@ -2,7 +2,7 @@
 
 It's possible to extend a mainline image with third-party modules either from
 your own instuctions following a simple filesystem layout/syntax using
-`build_module.sh` helper script, or failing back to package sources from
+`build_module.sh` helper script, or falling back to package sources from
 [pkg-oss](https://hg.nginx.org/pkg-oss).
 
 ## Usage
