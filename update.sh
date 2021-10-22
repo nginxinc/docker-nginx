@@ -39,7 +39,7 @@ declare -A alpine=(
 # when building alpine packages on architectures not supported by nginx.org
 defaultrev='${NGINX_VERSION}-${PKG_RELEASE}'
 declare -A rev=(
-    #[stable]='-r 500'
+    #[stable]='500'
 )
 
 get_packages() {

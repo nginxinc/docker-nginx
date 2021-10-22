@@ -50,16 +50,15 @@ RUN set -x \
                 geoip-dev \
                 perl-dev \
                 libedit-dev \
-                mercurial \
                 bash \
                 alpine-sdk \
                 findutils \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && hg clone https://hg.nginx.org/pkg-oss \
-                && cd pkg-oss \
-                && hg up %%REVISION%% \
+                && curl -O https://hg.nginx.org/pkg-oss/archive/%%REVISION%%.tar.gz \
+                && tar xzvf %%REVISION%%.tar.gz \
+                && cd pkg-oss-%%REVISION%% \
                 && cd alpine \
                 && make all \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
