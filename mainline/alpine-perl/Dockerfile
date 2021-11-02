@@ -7,8 +7,8 @@ FROM alpine:3.14
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.21.3
-ENV NJS_VERSION   0.6.2
+ENV NGINX_VERSION 1.21.4
+ENV NJS_VERSION   0.7.0
 ENV PKG_RELEASE   1
 
 RUN set -x \
@@ -61,16 +61,15 @@ RUN set -x \
                 geoip-dev \
                 perl-dev \
                 libedit-dev \
-                mercurial \
                 bash \
                 alpine-sdk \
                 findutils \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && hg clone https://hg.nginx.org/pkg-oss \
-                && cd pkg-oss \
-                && hg up ${NGINX_VERSION}-${PKG_RELEASE} \
+                && curl -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+                && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+                && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
                 && make all \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
