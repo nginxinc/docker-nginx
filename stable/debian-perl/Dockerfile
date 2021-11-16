@@ -7,8 +7,8 @@ FROM debian:bullseye-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.20.1
-ENV NJS_VERSION     0.5.3
+ENV NGINX_VERSION   1.20.2
+ENV NJS_VERSION     0.7.0
 ENV PKG_RELEASE     1~bullseye
 
 RUN set -x \
@@ -39,7 +39,7 @@ RUN set -x \
         nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${PKG_RELEASE} \
     " \
     && case "$dpkgArch" in \
-        amd64|i386|arm64) \
+        amd64|arm64) \
 # arches officialy built by upstream
             echo "deb https://nginx.org/packages/debian/ bullseye nginx" >> /etc/apt/sources.list.d/nginx.list \
             && apt-get update \

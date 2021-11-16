@@ -7,8 +7,8 @@ FROM alpine:3.14
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.20.1
-ENV NJS_VERSION   0.5.3
+ENV NGINX_VERSION 1.20.2
+ENV NJS_VERSION   0.7.0
 ENV PKG_RELEASE   1
 
 RUN set -x \
@@ -67,7 +67,7 @@ RUN set -x \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
                 && curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-                && PKGOSSCHECKSUM=\"024718988028320b587f03989b76facff6ba899d9bbb36eeb6564fc2569fc32021427fd35ad24a23d7cec63813227ff2f73c953bbb71786a2d3308e65efaf0b1 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
+                && PKGOSSCHECKSUM=\"af6e7eb25594dffe2903358f7a2c5c956f5b67b8df3f4e8237c30b63e50ce28e6eada3ed453687409beef8f3afa8f551cb20df2f06bd5e235eb66df212ece2ed *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
                 && if [ \"\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
                 else \

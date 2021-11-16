@@ -13,13 +13,13 @@ declare branches=(
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
     [mainline]='1.21.4'
-    [stable]='1.20.1'
+    [stable]='1.20.2'
 )
 
 # Current njs versions
 declare -A njs=(
     [mainline]='0.7.0'
-    [stable]='0.5.3'
+    [stable]='0.7.0'
 )
 
 # Current package patchlevel version
@@ -54,7 +54,7 @@ declare -A rev=(
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
     [mainline]='f917c27702aa89cda46878fc80d446839c592c43ce7f251b3f4ced60c7033d34496a92d283927225d458cbc4f2f89499e7fb16344923317cd7725ad722eaf93e'
-    [stable]='024718988028320b587f03989b76facff6ba899d9bbb36eeb6564fc2569fc32021427fd35ad24a23d7cec63813227ff2f73c953bbb71786a2d3308e65efaf0b1'
+    [stable]='af6e7eb25594dffe2903358f7a2c5c956f5b67b8df3f4e8237c30b63e50ce28e6eada3ed453687409beef8f3afa8f551cb20df2f06bd5e235eb66df212ece2ed'
 )
 
 get_packages() {
