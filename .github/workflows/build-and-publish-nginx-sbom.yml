@@ -48,7 +48,7 @@ jobs:
         with:
           command: release
           asset_id: assets/edb1ed65-a6b3-42e0-ae65-55a8bd7e92f6
-          attachments: '["yewnorosen-nginx-rkvst_latest.cyclonedx/yewnorosen-nginx-rkvst_latest.cyclonedx"]'
+          attachments: '["mwilder26-rkvst-sbom_latest.cyclonedx/mwilder26-rkvst-sbom_latest.cyclonedx"]'
 
   generate-and-publish-vulnerability-report:
     name: Scan SBOM for known Vulnerabilities
