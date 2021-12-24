@@ -12,7 +12,7 @@ COPY ./ /modules/
 
 RUN set -ex \
     && apk update \
-    && apk add linux-headers openssl-dev pcre-dev zlib-dev openssl abuild \
+    && apk add linux-headers openssl-dev pcre2-dev zlib-dev openssl abuild \
                musl-dev libxslt libxml2-utils make mercurial gcc unzip git \
                xz g++ coreutils \
     # allow abuild as a root user \
