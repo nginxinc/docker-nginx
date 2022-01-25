@@ -68,7 +68,7 @@ RUN set -x \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
                 && curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-                && PKGOSSCHECKSUM=\"b0ed109a820a2e8921f313d653032b8e70d3020138d634039ebb9194dc3968493f6eb4d85bdbf18d2aea7229deddb98ca0f1d9825defcc5af45f68ee37845232 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
+                && PKGOSSCHECKSUM=\"01e788d3eed17f072aab2b17d5cb83879fea9a360027ae8dc279557d9b149462a363f31b3b672d07efef472fceeb0d1705e26f83376da4b34f4d7c7cf60960b0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
                 && if [ \"\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
                 else \
