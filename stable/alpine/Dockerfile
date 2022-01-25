@@ -52,7 +52,7 @@ RUN set -x \
                 libc-dev \
                 make \
                 openssl-dev \
-                pcre2-dev \
+                pcre-dev \
                 zlib-dev \
                 linux-headers \
                 libxslt-dev \
