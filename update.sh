@@ -53,7 +53,7 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='b0ed109a820a2e8921f313d653032b8e70d3020138d634039ebb9194dc3968493f6eb4d85bdbf18d2aea7229deddb98ca0f1d9825defcc5af45f68ee37845232'
+    [mainline]='01e788d3eed17f072aab2b17d5cb83879fea9a360027ae8dc279557d9b149462a363f31b3b672d07efef472fceeb0d1705e26f83376da4b34f4d7c7cf60960b0'
     [stable]='af6e7eb25594dffe2903358f7a2c5c956f5b67b8df3f4e8237c30b63e50ce28e6eada3ed453687409beef8f3afa8f551cb20df2f06bd5e235eb66df212ece2ed'
 )
 
