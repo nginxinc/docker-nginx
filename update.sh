@@ -150,7 +150,7 @@ for branch in "${branches[@]}"; do
         packages=$(get_packages "$variant" "$branch")
         packagever=$(get_packagever "$variant" "$branch")
 
-        sed -i \
+        sed -i.bak \
             -e 's,%%ALPINE_VERSION%%,'"$alpinever"',' \
             -e 's,%%DEBIAN_VERSION%%,'"$debianver"',' \
             -e 's,%%NGINX_VERSION%%,'"$nginxver"',' \
