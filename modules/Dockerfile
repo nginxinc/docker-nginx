@@ -15,7 +15,17 @@ RUN set -ex \
     && apt install -y --no-install-suggests --no-install-recommends \
                 patch make wget mercurial devscripts debhelper dpkg-dev \
                 quilt lsb-release build-essential libxml2-utils xsltproc \
-                equivs git g++ \
+                equivs git g++ libparse-recdescent-perl \
+    && XSLSCRIPT_SHA512="f7194c5198daeab9b3b0c3aebf006922c7df1d345d454bd8474489ff2eb6b4bf8e2ffe442489a45d1aab80da6ecebe0097759a1e12cc26b5f0613d05b7c09ffa *stdin" \
+    && wget -O /tmp/xslscript.pl https://hg.nginx.org/xslscript/raw-file/01dc9ba12e1b/xslscript.pl \
+    && if [ "$(cat /tmp/xslscript.pl | openssl sha512 -r)" = "$XSLSCRIPT_SHA512" ]; then \
+        echo "XSLScript checksum verification succeeded!"; \
+        chmod +x /tmp/xslscript.pl; \
+        mv /tmp/xslscript.pl /usr/local/bin/; \
+    else \
+        echo "XSLScript checksum verification failed!"; \
+        exit 1; \
+    fi \
     && hg clone -r ${NGINX_VERSION}-${PKG_RELEASE%%~*} https://hg.nginx.org/pkg-oss/ \
     && cd pkg-oss \
     && mkdir /tmp/packages \
