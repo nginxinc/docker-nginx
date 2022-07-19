@@ -16,6 +16,15 @@ if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
         echo >&3 "$0: Looking for shell scripts in /docker-entrypoint.d/"
         find "/docker-entrypoint.d/" -follow -type f -print | sort -V | while read -r f; do
             case "$f" in
+                *.envsh)
+                    if [ -x "$f" ]; then
+                        echo >&3 "$0: Sourcing $f";
+                        source "$f"
+                    else
+                        # warn on shell scripts without exec bit
+                        echo >&3 "$0: Ignoring $f, not executable";
+                    fi
+                    ;;
                 *.sh)
                     if [ -x "$f" ]; then
                         echo >&3 "$0: Launching $f";
