@@ -10,7 +10,6 @@ auto_envsubst() {
   local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
 
   local template defined_envs relative_path output_path subdir
-  defined_envs=$(printf '${%s} ' $(env | cut -d= -f1))
   [ -d "$template_dir" ] || return 0
   if [ ! -w "$output_dir" ]; then
     echo >&3 "$ME: ERROR: $template_dir exists, but $output_dir is not writable"
@@ -23,7 +22,8 @@ auto_envsubst() {
     # create a subdirectory where the template file exists
     mkdir -p "$output_dir/$subdir"
     echo >&3 "$ME: Running envsubst on $template to $output_path"
-    envsubst "$defined_envs" < "$template" > "$output_path"
+    defined_envs=$(grep -oE '\$\{.*\}' "${template}")
+    envsubst $defined_envs < "$template" > "$output_path"
   done
 }
 
