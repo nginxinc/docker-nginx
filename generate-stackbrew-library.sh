@@ -98,4 +98,19 @@ for version in "${versions[@]}"; do
 		EOE
 	done
 
+	for variant in alpine-slim; do
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		echo
+		cat <<-EOE
+			Tags: $(join ', ' "${variantAliases[@]}")
+			Architectures: arm64v8, amd64
+			GitCommit: $commit
+			Directory: $version/$variant
+		EOE
+	done
+
 done

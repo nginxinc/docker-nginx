@@ -82,16 +82,26 @@ get_packages() {
     esac
 
     echo -n ' \\\n'
-    for p in nginx nginx-module-xslt nginx-module-geoip nginx-module-image-filter $perl; do
-        echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\\n'
-    done
-    for p in nginx-module-njs; do
-        echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${PKG_RELEASE} \\'
-    done
+    case "$distro" in
+    *-slim)
+        for p in nginx; do
+            echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\'
+        done
+        ;;
+    *)
+        for p in nginx nginx-module-xslt nginx-module-geoip nginx-module-image-filter $perl; do
+            echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\\n'
+        done
+        for p in nginx-module-njs; do
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${PKG_RELEASE} \\'
+        done
+        ;;
+    esac
 }
 
 get_packagerepo() {
     local distro="${1%-perl}"
+    distro="${distro%-slim}"
     shift
     local branch="$1"
     shift
@@ -125,7 +135,7 @@ __EOF__
 
 for branch in "${branches[@]}"; do
     for variant in \
-        alpine{,-perl} \
+        alpine{,-perl,-slim} \
         debian{,-perl}; do
         echo "$branch: $variant"
         dir="$branch/$variant"
