@@ -158,7 +158,7 @@ __EOF__
     "/")
       foundroot="${found##* }$mountpoint"
       ;;
-    "$mountpoint")
+    "$mountpoint" | /../*)
       foundroot="${found##* }"
       ;;
   esac
