@@ -47,8 +47,8 @@ RUN git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLa
 #   https://www.nginx.com/blog/compiling-and-installing-modsecurity-for-open-source-nginx/#    https://drive.google.com/drive/u/1/folders/1ky_9gL_stSEHupRty6EjFBefRPW4qJGj
 #
 #
-RUN wget https://github.com/openresty/headers-more-nginx-module/archive/v0.33.tar.gz && \
-	tar xvzf v0.33.tar.gz && \
+RUN wget https://github.com/openresty/headers-more-nginx-module/archive/v0.34.tar.gz && \
+	tar xvzf v0.34.tar.gz && \
   git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
 
 #
@@ -59,7 +59,7 @@ RUN nginver=$(nginx -v 2>&1 | awk -F / '{ print $2 }') && \
     wget http://nginx.org/download/nginx-${nginver}.tar.gz && \
     tar zxvf nginx-${nginver}.tar.gz && \
     cd nginx-$nginver && \
-    ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx --add-dynamic-module=../headers-more-nginx-module-0.33 && \
+    ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx --add-dynamic-module=../headers-more-nginx-module-0.34 && \
     make modules && \
     cp objs/*.so /etc/nginx/modules
 
