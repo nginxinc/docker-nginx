@@ -14,7 +14,7 @@ RUN apt-get update && \
     curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -&& \
     apt-key fingerprint ABF5BD827BD9BF62 && \
     apt update && \
-    apt install nginx nginx-module-njs nginx-module-perl -y && \
+    apt install nginx=1.19.10-1~bionic nginx-module-njs=1.19.10+0.5.3-1~bionic nginx-module-perl=1.19.10-1~bionic -y && \
     apt-get install -y dnsutils git wget build-essential libpcre3 libpcre3-dev libssl-dev libtool autoconf apache2-dev libxml2-dev libcurl4-openssl-dev automake pkgconf vim && \
     apt clean && \
     ln -sf /dev/stdout /var/log/nginx/access.log && \
