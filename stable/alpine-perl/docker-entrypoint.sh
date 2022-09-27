@@ -19,7 +19,7 @@ if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
                 *.envsh)
                     if [ -x "$f" ]; then
                         entrypoint_log "$0: Sourcing $f";
-                        source "$f"
+                        . "$f"
                     else
                         # warn on shell scripts without exec bit
                         entrypoint_log "$0: Ignoring $f, not executable";
