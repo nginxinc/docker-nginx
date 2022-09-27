@@ -14,9 +14,10 @@ auto_envsubst() {
   local template_dir="${NGINX_ENVSUBST_TEMPLATE_DIR:-/etc/nginx/templates}"
   local suffix="${NGINX_ENVSUBST_TEMPLATE_SUFFIX:-.template}"
   local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
+  local filter="${NGINX_ENVSUBST_FILTER:-}"
 
   local template defined_envs relative_path output_path subdir
-  defined_envs=$(printf '${%s} ' $(xargs -0n1 -a /proc/self/environ sh -c 'echo "$@" | grep -oEm1 "^[^=]+"' --));
+  defined_envs=$(printf '${%s} ' $(xargs -0n1 -a /proc/self/environ sh -c "echo \"\$@\" | grep -- \"${filter}\" | grep -oEm1 \"^[^=]+\"" --));
   [ -d "$template_dir" ] || return 0
   if [ ! -w "$output_dir" ]; then
     entrypoint_log "$ME: ERROR: $template_dir exists, but $output_dir is not writable"
