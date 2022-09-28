@@ -15,6 +15,14 @@ auto_envsubst() {
   local suffix="${NGINX_ENVSUBST_TEMPLATE_SUFFIX:-.template}"
   local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
   local filter="${NGINX_ENVSUBST_FILTER:-}"
+  local env_file="${NGINX_ENV_FILE:-.env}"
+
+  if [ -f "${env_file}" ]; then
+    entrypoint_log "$ME: Source file ${env_file}"
+    set -a
+    . "$(realpath "${env_file}")"
+    set +a
+  fi
 
   local template defined_envs relative_path output_path subdir
   defined_envs=$(printf '${%s} ' $(xargs -0n1 -a /proc/self/environ sh -c "echo \"\$@\" | grep -- \"${filter}\" | grep -oEm1 \"^[^=]+\"" --));
