@@ -7,8 +7,8 @@ FROM debian:bullseye-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.22.0
-ENV NJS_VERSION     0.7.6
+ENV NGINX_VERSION   1.22.1
+ENV NJS_VERSION     0.7.7
 ENV PKG_RELEASE     1~bullseye
 
 RUN set -x \
