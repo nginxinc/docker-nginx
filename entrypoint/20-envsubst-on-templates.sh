@@ -14,7 +14,6 @@ auto_envsubst() {
   local template_dir="${NGINX_ENVSUBST_TEMPLATE_DIR:-/etc/nginx/templates}"
   local suffix="${NGINX_ENVSUBST_TEMPLATE_SUFFIX:-.template}"
   local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
-  local filter="${NGINX_ENVSUBST_FILTER:-}"
 
   local template relative_path output_path subdir
   [ -d "$template_dir" ] || return 0
@@ -29,7 +28,7 @@ auto_envsubst() {
     # create a subdirectory where the template file exists
     mkdir -p "$output_dir/$subdir"
     entrypoint_log "$ME: Running envsubst on $template to $output_path"
-    perl -pe "s|\$({)?($filter\w*)(?(1)})|$ENV{$2} // $&|ge" < "$template" > "$output_path"
+    perl -pe 's|\$(\{)?($ENV{NGINX_ENVSUBST_FILTER}\w*)(?(1)\})|$ENV{$2} // $&|ge' < "$template" > "$output_path"
   done
 }
 
