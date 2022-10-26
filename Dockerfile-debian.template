@@ -76,7 +76,6 @@ RUN set -x \
     \
     && apt-get install --no-install-recommends --no-install-suggests -y \
                         $nginxPackages \
-                        gettext-base \
                         curl \
     && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
     \
