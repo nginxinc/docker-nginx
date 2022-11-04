@@ -137,7 +137,7 @@ for branch in "${branches[@]}"; do
     for variant in \
         alpine{,-perl,-slim} \
         debian{,-perl}; do
-        echo "$branch: $variant"
+        echo "$branch: $variant dockerfiles"
         dir="$branch/$variant"
         variant="$(basename "$variant")"
 
@@ -172,7 +172,13 @@ for branch in "${branches[@]}"; do
             -e 's,%%PKGOSSCHECKSUM%%,'"$pkgosschecksumver"',' \
             "$dir/Dockerfile"
 
-        cp -a entrypoint/*.sh "$dir/"
+    done
 
+    for variant in \
+        alpine-slim \
+        debian{,-perl}; do \
+        echo "$branch: $variant entrypoint scripts"
+        dir="$branch/$variant"
+        cp -a entrypoint/*.sh "$dir/"
     done
 done
