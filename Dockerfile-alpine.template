@@ -41,7 +41,6 @@ RUN set -x \
                 libxslt-dev \
                 gd-dev \
                 geoip-dev \
-                perl-dev \
                 libedit-dev \
                 bash \
                 alpine-sdk \
@@ -60,7 +59,7 @@ RUN set -x \
                 && tar xzvf %%REVISION%%.tar.gz \
                 && cd pkg-oss-%%REVISION%% \
                 && cd alpine \
-                && make all \
+                && make %%BUILDTARGET%% \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
                 && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
                 " \

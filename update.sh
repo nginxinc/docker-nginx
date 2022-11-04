@@ -123,6 +123,27 @@ get_packagever() {
     echo ${pkg[$branch]}${suffix}
 }
 
+get_buildtarget() {
+    local distro="$1"
+    case "$distro" in
+        alpine-slim)
+            echo base
+            ;;
+        alpine-perl)
+            echo module-perl
+            ;;
+        alpine)
+            echo module-geoip module-image-filter module-njs module-xslt
+            ;;
+        debian)
+            echo "\$nginxPackages"
+            ;;
+        debian-perl)
+            echo "nginx-module-perl=\${NGINX_VERSION}-\${PKG_RELEASE}"
+            ;;
+    esac
+}
+
 generated_warning() {
     cat <<__EOF__
 #
@@ -143,7 +164,7 @@ for branch in "${branches[@]}"; do
 
         [ -d "$dir" ] || continue
 
-        template="Dockerfile-${variant%-perl}.template"
+        template="Dockerfile-${variant}.template"
         {
             generated_warning
             cat "$template"
@@ -159,6 +180,7 @@ for branch in "${branches[@]}"; do
         packagerepo=$(get_packagerepo "$variant" "$branch")
         packages=$(get_packages "$variant" "$branch")
         packagever=$(get_packagever "$variant" "$branch")
+        buildtarget=$(get_buildtarget "$variant")
 
         sed -i.bak \
             -e 's,%%ALPINE_VERSION%%,'"$alpinever"',' \
@@ -170,13 +192,14 @@ for branch in "${branches[@]}"; do
             -e 's,%%PACKAGEREPO%%,'"$packagerepo"',' \
             -e 's,%%REVISION%%,'"$revver"',' \
             -e 's,%%PKGOSSCHECKSUM%%,'"$pkgosschecksumver"',' \
+            -e 's,%%BUILDTARGET%%,'"$buildtarget"',' \
             "$dir/Dockerfile"
 
     done
 
     for variant in \
         alpine-slim \
-        debian{,-perl}; do \
+        debian; do \
         echo "$branch: $variant entrypoint scripts"
         dir="$branch/$variant"
         cp -a entrypoint/*.sh "$dir/"
