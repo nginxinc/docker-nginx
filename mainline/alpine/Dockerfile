@@ -3,18 +3,11 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM alpine:3.17
+FROM nginx:1.23.2-alpine-slim
 
-LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
-
-ENV NGINX_VERSION 1.23.2
 ENV NJS_VERSION   0.7.7
-ENV PKG_RELEASE   1
 
 RUN set -x \
-# create nginx user/group first, to be consistent throughout docker variants
-    && addgroup -g 101 -S nginx \
-    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx \
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-r${PKG_RELEASE} \
@@ -58,7 +51,6 @@ RUN set -x \
                 libxslt-dev \
                 gd-dev \
                 geoip-dev \
-                perl-dev \
                 libedit-dev \
                 bash \
                 alpine-sdk \
@@ -77,7 +69,7 @@ RUN set -x \
                 && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
                 && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
-                && make all \
+                && make module-geoip module-image-filter module-njs module-xslt \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
                 && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
                 " \
@@ -92,42 +84,5 @@ RUN set -x \
     && if [ -n "$tempDir" ]; then rm -rf "$tempDir"; fi \
     && if [ -n "/etc/apk/keys/abuild-key.rsa.pub" ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi \
     && if [ -n "/etc/apk/keys/nginx_signing.rsa.pub" ]; then rm -f /etc/apk/keys/nginx_signing.rsa.pub; fi \
-# Bring in gettext so we can get `envsubst`, then throw
-# the rest away. To do this, we need to install `gettext`
-# then move `envsubst` out of the way so `gettext` can
-# be deleted completely, then move `envsubst` back.
-    && apk add --no-cache --virtual .gettext gettext \
-    && mv /usr/bin/envsubst /tmp/ \
-    \
-    && runDeps="$( \
-        scanelf --needed --nobanner /tmp/envsubst \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | sort -u \
-            | xargs -r apk info --installed \
-            | sort -u \
-    )" \
-    && apk add --no-cache $runDeps \
-    && apk del .gettext \
-    && mv /tmp/envsubst /usr/local/bin/ \
-# Bring in tzdata so users could set the timezones through the environment
-# variables
-    && apk add --no-cache tzdata \
 # Bring in curl and ca-certificates to make registering on DNS SD easier
-    && apk add --no-cache curl ca-certificates \
-# forward request and error logs to docker log collector
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log \
-# create a docker-entrypoint.d directory
-    && mkdir /docker-entrypoint.d
-
-COPY docker-entrypoint.sh /
-COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
-COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
-COPY 30-tune-worker-processes.sh /docker-entrypoint.d
-ENTRYPOINT ["/docker-entrypoint.sh"]
-
-EXPOSE 80
-
-STOPSIGNAL SIGQUIT
-
-CMD ["nginx", "-g", "daemon off;"]
+    && apk add --no-cache curl ca-certificates
