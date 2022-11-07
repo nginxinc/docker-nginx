@@ -28,7 +28,7 @@ if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
                 *.sh)
                     if [ -x "$f" ]; then
                         entrypoint_log "$0: Launching $f";
-                        "$f"
+                        . "$f"
                     else
                         # warn on shell scripts without exec bit
                         entrypoint_log "$0: Ignoring $f, not executable";
