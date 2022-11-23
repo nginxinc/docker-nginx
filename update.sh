@@ -36,7 +36,7 @@ declare -A debian=(
 
 declare -A alpine=(
     [mainline]='3.17'
-    [stable]='3.16'
+    [stable]='3.17'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
