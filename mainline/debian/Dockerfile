@@ -107,7 +107,11 @@ COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
 COPY 30-tune-worker-processes.sh /docker-entrypoint.d
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+ADD default.conf /etc/nginx/conf.d/
+ADD index.html /usr/share/nginx/html
+
 EXPOSE 80
+EXPOSE 8080
 
 STOPSIGNAL SIGQUIT
 
