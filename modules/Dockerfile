@@ -3,16 +3,16 @@ FROM ${NGINX_FROM_IMAGE} as builder
 
 ARG ENABLED_MODULES
 
-RUN set -ex \
-    && if [ "$ENABLED_MODULES" = "" ]; then \
+SHELL ["/bin/bash", "-exo", "pipefail", "-c"]
+
+RUN if [ "$ENABLED_MODULES" = "" ]; then \
         echo "No additional modules enabled, exiting"; \
         exit 1; \
     fi
 
 COPY ./ /modules/
 
-RUN set -ex \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y --no-install-suggests --no-install-recommends \
                 patch make wget mercurial devscripts debhelper dpkg-dev \
                 quilt lsb-release build-essential libxml2-utils xsltproc \
@@ -71,8 +71,7 @@ RUN set -ex \
 
 FROM ${NGINX_FROM_IMAGE}
 RUN --mount=type=bind,target=/tmp/packages/,source=/tmp/packages/,from=builder \
-    set -ex \
-    && apt-get update \
+    apt-get update \
     && . /tmp/packages/modules.env \
     && for module in $BUILT_MODULES; do \
            apt-get install --no-install-suggests --no-install-recommends -y /tmp/packages/nginx-module-${module}_${NGINX_VERSION}*.deb; \
