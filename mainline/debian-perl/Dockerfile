@@ -5,6 +5,8 @@
 #
 FROM nginx:1.23.3
 
+LABEL org.opencontainers.image.base.name="docker.io/library/nginx:1.23.3"
+
 RUN set -x \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \

@@ -5,6 +5,8 @@
 #
 FROM nginx:1.22.1-alpine-slim
 
+LABEL org.opencontainers.image.base.name="docker.io/library/nginx:1.22.1-alpine-slim"
+
 ENV NJS_VERSION   0.7.9
 
 RUN set -x \

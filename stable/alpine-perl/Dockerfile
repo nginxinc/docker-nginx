@@ -5,6 +5,8 @@
 #
 FROM nginx:1.22.1-alpine
 
+LABEL org.opencontainers.image.base.name="docker.io/library/nginx:1.22.1-alpine"
+
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages=" \

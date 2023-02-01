@@ -5,7 +5,14 @@
 #
 FROM debian:bullseye-slim
 
-LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+LABEL org.opencontainers.image.title="nginx"
+LABEL org.opencontainers.image.description="Official build of nginx for Docker."
+LABEL org.opencontainers.image.url="https://www.nginx.org"
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+LABEL org.opencontainers.image.documentation="https://nginx.org/en/docs"
+LABEL org.opencontainers.image.vendor="NGINX Docker Maintainers <docker-maint@nginx.com>"
+LABEL org.opencontainers.image.version="1.23.3"
+LABEL org.opencontainers.image.base.name="docker.io/library/debian:bullseye-slim"
 
 ENV NGINX_VERSION   1.23.3
 ENV NJS_VERSION     0.7.9
