@@ -21,6 +21,7 @@ RUN set -x \
 # install prerequisites for public key and pkg-oss checks
     && apk add --no-cache --virtual .checksum-deps \
         openssl \
+	openssl-dev \
     && case "$apkArch" in \
         x86_64|aarch64) \
 # arches officially built by upstream
