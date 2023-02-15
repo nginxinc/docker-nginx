@@ -60,9 +60,13 @@ for version in "${versions[@]}"; do
 	fi
 	versionAliases+=( ${aliases[$version]:-} )
 
+	debianVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk -F"[-:]" '$1 == "FROM debian" { print $2; exit }')"
+	debianAliases=( ${versionAliases[@]/%/-$debianVersion} )
+	debianAliases=( "${debianAliases[@]//latest-/}" )
+
 	echo
 	cat <<-EOE
-		Tags: $(join ', ' "${versionAliases[@]}")
+		Tags: $(join ', ' "${versionAliases[@]}"), $(join ', ' "${debianAliases[@]}")
 		Architectures: amd64, arm32v5, arm32v7, arm64v8, i386, mips64le, ppc64le, s390x
 		GitCommit: $commit
 		Directory: $version/$base
@@ -72,6 +76,7 @@ for version in "${versions[@]}"; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/debian/$debianVersion}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
 		echo
@@ -83,10 +88,13 @@ for version in "${versions[@]}"; do
 		EOE
 	done
 
+	alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
+
 	for variant in alpine alpine-perl; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
 		echo
@@ -102,6 +110,7 @@ for version in "${versions[@]}"; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
 		echo
