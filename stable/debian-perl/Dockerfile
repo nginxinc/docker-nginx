@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM nginx:1.22.1
+FROM nginx:1.24.0
 
 RUN set -x \
     && apt-get update \

@@ -13,13 +13,13 @@ declare branches=(
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
     [mainline]='1.23.4'
-    [stable]='1.22.1'
+    [stable]='1.24.0'
 )
 
 # Current njs versions
 declare -A njs=(
     [mainline]='0.7.11'
-    [stable]='0.7.11'
+    [stable]='0.7.12'
 )
 
 # Current package patchlevel version
@@ -45,7 +45,7 @@ declare -A alpine=(
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
     [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
-    [stable]='811'
+    [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
 )
 
 # Holds SHA512 checksum for the pkg-oss tarball produced by source code
@@ -53,7 +53,7 @@ declare -A rev=(
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
     [mainline]='8f3f6c1ddd984c0c7320d3bea25eee42749db6d69c251223cf91d69b8d80b703ab39eb94fcf731399a7693ebd8dd37d1b3232ea1184ca98e5ca0ba6165e1a05c'
-    [stable]='c979fbdcc429d146f7fce922b0cc3f47dfbfbec5685af82395c59e21216dce47ef13fc26d610f1faabc0cb3a4ee58b42000c511bf77277f0898f5de55c868dcc'
+    [stable]='dc47dbaeb1c0874b264d34ddfec40e7d2b814e7db48d144e12d5991c743ef5fcf780ecbab72324e562dd84bb9c0e4dd71d14850b20ceaf470c46f8fe7510275b'
 )
 
 get_packages() {
