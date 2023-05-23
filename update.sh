@@ -12,13 +12,13 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.23.4'
+    [mainline]='1.25.0'
     [stable]='1.24.0'
 )
 
 # Current njs versions
 declare -A njs=(
-    [mainline]='0.7.11'
+    [mainline]='0.7.12'
     [stable]='0.7.12'
 )
 
