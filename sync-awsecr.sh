@@ -55,7 +55,7 @@ for version in "${versions[@]}"; do
 	commit="$(dirCommit "$version/$base")"
 	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
     pulllist+=( "$image:$fullVersion" )
-    for variant in perl alpine alpine-perl; do
+    for variant in perl alpine alpine-perl alpine-slim; do
         pulllist+=( "$image:$fullVersion-$variant" )
     done
 done
@@ -86,7 +86,7 @@ for version in "${versions[@]}"; do
         done
 	done
 
-	for variant in alpine alpine-perl; do
+	for variant in alpine alpine-perl alpine-slim; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
