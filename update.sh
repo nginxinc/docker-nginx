@@ -203,5 +203,6 @@ for branch in "${branches[@]}"; do
         echo "$branch: $variant entrypoint scripts"
         dir="$branch/$variant"
         cp -a entrypoint/*.sh "$dir/"
+        cp -a entrypoint/*.envsh "$dir/"
     done
 done
