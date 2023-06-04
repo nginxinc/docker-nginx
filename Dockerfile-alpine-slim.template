@@ -102,6 +102,8 @@ RUN set -x \
 # Ensure we can run our entrypoint and make it debian compatible
     && apk add --no-cache tini \
     && ln -s /sbin/tini /usr/bin/tini \
+# Add support for manually monitoring files to trigger server reloads
+    && apk add --no-cache inotify-tools \
 # create a docker-entrypoint.d directory
     && mkdir /docker-entrypoint.d
 

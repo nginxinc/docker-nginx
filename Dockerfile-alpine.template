@@ -79,3 +79,5 @@ RUN set -x \
 # Ensure we can run our entrypoint and do it compatible with alpine
     && apk add --no-cache tini \
     && ln -s /sbin/tini /usr/bin/tini
+# Add support for manually monitoring files to trigger server reloads
+    && apk add --no-cache inotify-tools

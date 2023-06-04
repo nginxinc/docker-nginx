@@ -83,6 +83,7 @@ RUN set -x \
                         gettext-base \
                         curl \
                         tini \
+                        inotify-tools \
     && ln -s /usr/bin/tini /sbin/tini \
     && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
     \
