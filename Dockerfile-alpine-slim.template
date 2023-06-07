@@ -12,6 +12,8 @@ RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages="%%PACKAGES%%
     " \
+# Update all packages for security reasons
+    && apk --no-cache upgrade \
 # install prerequisites for public key and pkg-oss checks
     && apk add --no-cache --virtual .checksum-deps \
         openssl \
