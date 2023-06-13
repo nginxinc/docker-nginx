@@ -30,7 +30,7 @@ declare -A pkg=(
 )
 
 declare -A debian=(
-    [mainline]='bullseye'
+    [mainline]='bookworm'
     [stable]='bullseye'
 )
 
