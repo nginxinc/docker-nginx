@@ -6,6 +6,6 @@ set -eu
 LC_ALL=C
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-if [ "${NGINX_ENTRYPOINT_LOCAL_RESOLVERS}" ]; then
-  export NGINX_LOCAL_RESOLVERS=$(awk 'BEGIN{ORS=" "} $1=="nameserver" {print $2}' /etc/resolv.conf)
-fi
+[ "${NGINX_ENTRYPOINT_LOCAL_RESOLVERS:-}" ] || return 0
+
+export NGINX_LOCAL_RESOLVERS=$(awk 'BEGIN{ORS=" "} $1=="nameserver" {print $2}' /etc/resolv.conf)
