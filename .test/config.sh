@@ -1,0 +1,9 @@
+imageTests+=(
+	[nginx]='
+        ipv6
+        static
+        templates
+        templates-resolver
+        workers
+	'
+)
