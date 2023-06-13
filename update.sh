@@ -12,7 +12,7 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.25.0'
+    [mainline]='1.25.1'
     [stable]='1.24.0'
 )
 
@@ -52,7 +52,7 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='18bee4bd498e0b8da765e8cd2d824e1027d40fd95d55fd59339cdb5d5e0e633795f4196c76045e86027cdfc6ab05a3cc0d39b25bd0a967f1edd47910d813262a'
+    [mainline]='dd08a5c2b441817d58ffc91ade0d927a21bc9854c768391e92a005997a2961bcda64ca6a5cfce98d5394ac2787c8f4839b150f206835a8a7db944625651f9fd8'
     [stable]='dc47dbaeb1c0874b264d34ddfec40e7d2b814e7db48d144e12d5991c743ef5fcf780ecbab72324e562dd84bb9c0e4dd71d14850b20ceaf470c46f8fe7510275b'
 )
 
