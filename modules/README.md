@@ -13,7 +13,10 @@ $ docker build --build-arg ENABLED_MODULES="ndk lua" -t my-nginx-with-lua .
 This command will attempt to build an image called `my-nginx-with-lua` based on
 official nginx docker hub image with two modules: `ndk` and `lua`.
 By default, a Debian-based image will be used.  If you wish to use Alpine
-instead, add `-f Dockerfile.alpine` to the command line.
+instead, add `-f Dockerfile.alpine` to the command line.  By default, mainline
+images are used as a base, but it's possible to specify a different image by
+providing `NGINX_FROM_IMAGE` build argument, e.g. `--build-arg
+NGINX_FROM_IMAGE=nginx:stable`.
 
 The build script will look for module build definition files on filesystem
 directory under the same name as the module (and resulting package) and if
