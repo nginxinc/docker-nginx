@@ -5,5 +5,6 @@ imageTests+=(
         templates
         templates-resolver
         workers
+        modules
 	'
 )
