@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# vim:sw=4:ts=4:sts=4:et
+
 set -Eeuo pipefail
 shopt -s nullglob
 
@@ -120,27 +122,27 @@ get_packagever() {
 
     [ "${distro}" = "debian" ] && suffix="~${debianver}"
 
-    echo ${pkg[$branch]}${suffix}
+    echo "${pkg[$branch]}${suffix}"
 }
 
 get_buildtarget() {
     local distro="$1"
     case "$distro" in
-        alpine-slim)
-            echo base
-            ;;
-        alpine-perl)
-            echo module-perl
-            ;;
-        alpine)
-            echo module-geoip module-image-filter module-njs module-xslt
-            ;;
-        debian)
-            echo "\$nginxPackages"
-            ;;
-        debian-perl)
-            echo "nginx-module-perl=\${NGINX_VERSION}-\${PKG_RELEASE}"
-            ;;
+    alpine-slim)
+        echo base
+        ;;
+    alpine-perl)
+        echo module-perl
+        ;;
+    alpine)
+        echo module-geoip module-image-filter module-njs module-xslt
+        ;;
+    debian)
+        echo "\$nginxPackages"
+        ;;
+    debian-perl)
+        echo "nginx-module-perl=\${NGINX_VERSION}-\${PKG_RELEASE}"
+        ;;
     esac
 }
 
@@ -194,12 +196,11 @@ for branch in "${branches[@]}"; do
             -e 's,%%PKGOSSCHECKSUM%%,'"$pkgosschecksumver"',' \
             -e 's,%%BUILDTARGET%%,'"$buildtarget"',' \
             "$dir/Dockerfile"
-
     done
 
     for variant in \
         alpine-slim \
-        debian; do \
+        debian; do
         echo "$branch: $variant entrypoint scripts"
         dir="$branch/$variant"
         cp -a entrypoint/*.sh "$dir/"
