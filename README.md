@@ -1,3 +1,6 @@
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Community Support](https://badgen.net/badge/support/community/cyan?icon=awesome)](https://github.com/nginxinc/docker-nginx/blob/master/SUPPORT.md)
+
 # About this Repo
 
 ## Maintained by: [the NGINX Docker Maintainers](https://github.com/nginxinc/docker-nginx)
@@ -14,9 +17,19 @@ For more information about the full official images change lifecycle, see [the "
 
 For outstanding `nginx` image PRs, check [PRs with the "library/nginx" label on the official-images repository](https://github.com/docker-library/official-images/labels/library%2Fnginx). For the current "source of truth" for [`nginx`](https://hub.docker.com/_/nginx/), see [the `library/nginx` file in the official-images repository](https://github.com/docker-library/official-images/blob/master/library/nginx).
 
+## Contributing
+
+Please see the [contributing guide](https://github.com/nginxinc/docker-nginx/blob/master/CONTRIBUTING.md) for guidelines on how to best contribute to this project.
+
+## License
+
+[BSD 2-Clause](https://github.com/nginxinc/docker-nginx/blob/master/LICENSE)
+
+&copy; [F5, Inc.](https://www.f5.com/) 2023
+
 ---
 
--	[![build status badge](https://img.shields.io/github/actions/workflow/status/nginxinc/docker-nginx/ci.yml?branch=master&label=GitHub%20CI)](https://github.com/nginxinc/docker-nginx/actions?query=workflow%3A%22GitHub+CI%22+branch%3Amaster)
+- [![build status badge](https://img.shields.io/github/actions/workflow/status/nginxinc/docker-nginx/ci.yml?branch=master&label=GitHub%20CI)](https://github.com/nginxinc/docker-nginx/actions?query=workflow%3A%22GitHub+CI%22+branch%3Amaster)
 
 | Build | Status | Badges | (per-arch) |
 |:-:|:-:|:-:|:-:|
