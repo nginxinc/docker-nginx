@@ -81,8 +81,8 @@ RUN set -x \
 # remove checksum deps
     && apk del --no-network .checksum-deps \
 # if we have leftovers from building, let's purge them (including extra, unnecessary build deps)
-    && if [ -n "$tempDir" ]; then rm -rf "$tempDir"; fi \
-    && if [ -n "/etc/apk/keys/abuild-key.rsa.pub" ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi \
-    && if [ -n "/etc/apk/keys/nginx_signing.rsa.pub" ]; then rm -f /etc/apk/keys/nginx_signing.rsa.pub; fi \
+    && if [ -f "$tempDir" ]; then rm -rf "$tempDir"; fi \
+    && if [ -f "/etc/apk/keys/abuild-key.rsa.pub" ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi \
+    && if [ -f "/etc/apk/keys/nginx_signing.rsa.pub" ]; then rm -f /etc/apk/keys/nginx_signing.rsa.pub; fi \
 # Bring in curl and ca-certificates to make registering on DNS SD easier
     && apk add --no-cache curl ca-certificates
