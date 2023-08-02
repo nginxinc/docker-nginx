@@ -4,7 +4,7 @@
 set -eu
 
 LC_ALL=C
-ME=$( basename "$0" )
+ME=$(basename "$0")
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 [ "${NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE:-}" ] || exit 0
