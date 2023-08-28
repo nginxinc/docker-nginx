@@ -7,6 +7,8 @@
 # not be copied from the builder image to the resulting one, so you need to
 # build them statically
 
-echo "No prebuild stage required - all dependencies are satisfied already!"
+echo "Work around Alpine's wget/403 issue with github.com by aliasing wget to busybox wget"
+apk add wget
+ln -sf /bin/busybox /usr/bin/wget
 
 exit 0
