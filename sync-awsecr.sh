@@ -54,10 +54,10 @@ join() {
 for version in "${versions[@]}"; do
 	commit="$(dirCommit "$version/$base")"
 	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
-    pulllist+=( "$image:$fullVersion" )
-    for variant in perl alpine alpine-perl alpine-slim; do
-        pulllist+=( "$image:$fullVersion-$variant" )
-    done
+	pulllist+=( "$image:$fullVersion" )
+	for variant in perl alpine alpine-perl alpine-slim; do
+		pulllist+=( "$image:$fullVersion-$variant" )
+	done
 done
 
 for version in "${versions[@]}"; do
@@ -72,18 +72,31 @@ for version in "${versions[@]}"; do
 	versionAliases+=( ${aliases[$version]:-} )
 
     for tag in ${versionAliases[@]:1}; do
-        taglist["$image:$tag"]="$image:$fullVersion"
+	taglist["$image:$tag"]="$image:$fullVersion"
     done
 
 	for variant in debian-perl; do
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
-        for tag in ${variantAliases[@]}; do
-	    if [ "$tag" != "${fullVersion}-perl" ]; then
-            taglist["$image:$tag"]="$image:$fullVersion-perl"
-        fi
-        done
+		for tag in ${variantAliases[@]}; do
+		    if [ "$tag" != "${fullVersion}-perl" ]; then
+		 	taglist["$image:$tag"]="$image:$fullVersion-perl"
+		    fi
+		done
+	done
+
+	for variant in ubuntu; do
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		for tag in ${variantAliases[@]}; do
+		    if [ "$tag" != "${fullVersion}-$variant" ]; then
+			taglist["$image:$tag"]="$image:${fullVersion}-$variant"
+	    	    fi
+		done
 	done
 
 	for variant in alpine alpine-perl alpine-slim; do
@@ -92,11 +105,11 @@ for version in "${versions[@]}"; do
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
-        for tag in ${variantAliases[@]}; do
-	        if [ "$tag" != "${fullVersion}-$variant" ]; then
-                taglist["$image:$tag"]="$image:${fullVersion}-$variant"
-            fi
-        done
+		for tag in ${variantAliases[@]}; do
+		    if [ "$tag" != "${fullVersion}-$variant" ]; then
+			taglist["$image:$tag"]="$image:${fullVersion}-$variant"
+	    	    fi
+		done
 	done
 
 done
@@ -142,7 +155,7 @@ echo "# manifesting stuff"
 for tag in ${pulllist[@]} ${!taglist[@]}; do
     string="docker manifest create --amend $registry/$tag"
     for arch in ${architectures[@]}; do
-        string+=" $registry/$tag-$arch"
+	string+=" $registry/$tag-$arch"
     done
     echo $string
 done
