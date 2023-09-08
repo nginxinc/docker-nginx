@@ -29,11 +29,6 @@ declare -A pkg=(
     [stable]=1
 )
 
-declare -A alpine=(
-    [mainline]='3.18'
-    [stable]='3.18'
-)
-
 declare -A debian=(
     [mainline]='bookworm'
     [stable]='bullseye'
@@ -42,6 +37,11 @@ declare -A debian=(
 declare -A ubuntu=(
     [mainline]='lunar'
     [stable]='jammy'
+)
+
+declare -A alpine=(
+    [mainline]='3.18'
+    [stable]='3.18'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
