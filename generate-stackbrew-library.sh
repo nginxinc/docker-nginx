@@ -88,6 +88,24 @@ for version in "${versions[@]}"; do
 		EOE
 	done
 
+	ubuntuVersion="$(git show "$commit":"$version/ubuntu/Dockerfile" | awk -F: '$1 == "FROM ubuntu" { print $2; exit }')"
+
+	for variant in ubuntu; do
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/ubuntu/ubuntu$ubuntuVersion}}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		echo
+		cat <<-EOE
+			Tags: $(join ', ' "${variantAliases[@]}")
+			Architectures: arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64
+			GitCommit: $commit
+			Directory: $version/$variant
+		EOE
+	done
+
 	alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
 
 	for variant in alpine alpine-perl; do
