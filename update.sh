@@ -29,14 +29,19 @@ declare -A pkg=(
     [stable]=1
 )
 
+declare -A alpine=(
+    [mainline]='3.18'
+    [stable]='3.18'
+)
+
 declare -A debian=(
     [mainline]='bookworm'
     [stable]='bullseye'
 )
 
-declare -A alpine=(
-    [mainline]='3.18'
-    [stable]='3.18'
+declare -A ubuntu=(
+    [mainline]='lunar'
+    [stable]='jammy'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
@@ -73,6 +78,9 @@ get_packages() {
     debian*:*)
         sep="+"
         ;;
+    ubuntu*:*)
+        sep="+"
+        ;;
     esac
 
     case "$distro" in
@@ -83,6 +91,11 @@ get_packages() {
 
     echo -n ' \\\n'
     case "$distro" in
+    ubuntu)
+        for p in nginx; do
+            echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\'
+        done
+        ;;
     *-slim)
         for p in nginx; do
             echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\'
@@ -119,6 +132,7 @@ get_packagever() {
     local suffix=
 
     [ "${distro}" = "debian" ] && suffix="~${debianver}"
+    [ "${distro}" = "ubuntu" ] && suffix="~${ubuntuver}"
 
     echo ${pkg[$branch]}${suffix}
 }
@@ -141,6 +155,9 @@ get_buildtarget() {
         debian-perl)
             echo "nginx-module-perl=\${NGINX_VERSION}-\${PKG_RELEASE}"
             ;;
+        ubuntu)
+            echo "\$nginxPackages"
+            ;;
     esac
 }
 
@@ -157,12 +174,16 @@ __EOF__
 for branch in "${branches[@]}"; do
     for variant in \
         alpine{,-perl,-slim} \
-        debian{,-perl}; do
+        debian{,-perl} \
+        ubuntu; do
         echo "$branch: $variant dockerfiles"
         dir="$branch/$variant"
         variant="$(basename "$variant")"
 
-        [ -d "$dir" ] || continue
+        if [ ! -d "$dir" ]; then
+            echo "     Wrning: $dir not found, skipping"
+            continue
+        fi
 
         template="Dockerfile-${variant}.template"
         {
@@ -171,6 +192,7 @@ for branch in "${branches[@]}"; do
         } >"$dir/Dockerfile"
 
         debianver="${debian[$branch]}"
+        ubuntuver="${ubuntu[$branch]}"
         alpinever="${alpine[$branch]}"
         nginxver="${nginx[$branch]}"
         njsver="${njs[${branch}]}"
@@ -185,6 +207,7 @@ for branch in "${branches[@]}"; do
         sed -i.bak \
             -e 's,%%ALPINE_VERSION%%,'"$alpinever"',' \
             -e 's,%%DEBIAN_VERSION%%,'"$debianver"',' \
+            -e 's,%%UBUNTU_VERSION%%,'"$ubuntuver"',' \
             -e 's,%%NGINX_VERSION%%,'"$nginxver"',' \
             -e 's,%%NJS_VERSION%%,'"$njsver"',' \
             -e 's,%%PKG_RELEASE%%,'"$packagever"',' \
@@ -199,7 +222,8 @@ for branch in "${branches[@]}"; do
 
     for variant in \
         alpine-slim \
-        debian; do \
+        debian \
+        ubuntu; do \
         echo "$branch: $variant entrypoint scripts"
         dir="$branch/$variant"
         cp -a entrypoint/*.sh "$dir/"
