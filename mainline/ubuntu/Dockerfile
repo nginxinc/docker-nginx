@@ -3,13 +3,13 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM ubuntu:lunar
+FROM ubuntu:jammy
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION   1.25.2
 ENV NJS_VERSION     0.8.0
-ENV PKG_RELEASE     1~lunar
+ENV PKG_RELEASE     1~jammy
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -40,13 +40,13 @@ RUN set -x \
     && case "$dpkgArch" in \
         amd64|arm64) \
 # arches officialy built by upstream
-            echo "deb [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/ubuntu/ lunar nginx" >> /etc/apt/sources.list.d/nginx.list \
+            echo "deb [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/ubuntu/ jammy nginx" >> /etc/apt/sources.list.d/nginx.list \
             && apt-get update \
             ;; \
         *) \
 # we're on an architecture upstream doesn't officially build for
 # let's build binaries from the published source packages
-            echo "deb-src [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/ubuntu/ lunar nginx" >> /etc/apt/sources.list.d/nginx.list \
+            echo "deb-src [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/ubuntu/ jammy nginx" >> /etc/apt/sources.list.d/nginx.list \
             \
 # new directory for storing sources and .deb files
             && tempDir="$(mktemp -d)" \
