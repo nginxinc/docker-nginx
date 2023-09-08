@@ -36,7 +36,7 @@ declare -A debian=(
 
 # jammer is 22.04LTS
 declare -A ubuntu=(
-    [mainline]='jammer'
+    [mainline]='jammy'
     [stable]='jammy'
 )
 
