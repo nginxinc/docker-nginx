@@ -50,6 +50,12 @@ join() {
 }
 
 for version in "${versions[@]}"; do
+    debian_otel=
+    alpine_otel=
+    if [ "$version" = "mainline" ]; then
+        debian_otel="debian-otel"
+        alpine_otel="alpine-otel"
+    fi
 	commit="$(dirCommit "$version/$base")"
 
 	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
@@ -88,6 +94,23 @@ for version in "${versions[@]}"; do
 		EOE
 	done
 
+	for variant in $debian_otel; do
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-otel}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/debian/$debianVersion}}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		echo
+		cat <<-EOE
+			Tags: $(join ', ' "${variantAliases[@]}")
+			Architectures: amd64, arm64v8
+			GitCommit: $commit
+			Directory: $version/$variant
+		EOE
+	done
+
+
 	alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
 
 	for variant in alpine alpine-perl alpine-slim; do
@@ -101,6 +124,22 @@ for version in "${versions[@]}"; do
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64
+			GitCommit: $commit
+			Directory: $version/$variant
+		EOE
+	done
+
+	for variant in $alpine_otel; do
+		commit="$(dirCommit "$version/$variant")"
+
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
+		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		echo
+		cat <<-EOE
+			Tags: $(join ', ' "${variantAliases[@]}")
+			Architectures: amd64, arm64v8
 			GitCommit: $commit
 			Directory: $version/$variant
 		EOE

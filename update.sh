@@ -22,6 +22,12 @@ declare -A njs=(
     [stable]='0.8.0'
 )
 
+# Current otel versions
+declare -A otel=(
+    [mainline]='0.1.0'
+    [stable]='0.1.0'
+)
+
 # Current package patchlevel version
 # Remember to update pkgosschecksum when changing this.
 declare -A pkg=(
@@ -61,6 +67,8 @@ get_packages() {
     shift
     local branch="$1"
     shift
+    local bn=""
+    local otel=
     local perl=
     local r=
     local sep=
@@ -81,6 +89,13 @@ get_packages() {
         ;;
     esac
 
+    case "$distro:$branch" in
+    *-otel:mainline)
+        otel="nginx-module-otel"
+        bn="\n"
+        ;;
+    esac
+
     echo -n ' \\\n'
     case "$distro" in
     *-slim)
@@ -93,16 +108,21 @@ get_packages() {
             echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\\n'
         done
         for p in nginx-module-njs; do
-            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${PKG_RELEASE} \\'
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${PKG_RELEASE} \\'"$bn"
+        done
+        for p in $otel; do
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${OTEL_VERSION}-'"$r"'${PKG_RELEASE} \\'
         done
         ;;
     esac
 }
 
 get_packagerepo() {
-    local distro="${1%-perl}"
-    distro="${distro%-slim}"
+    local distro="$1"
     shift
+    distro="${distro%-perl}"
+    distro="${distro%-otel}"
+    distro="${distro%-slim}"
     local branch="$1"
     shift
 
@@ -112,8 +132,11 @@ get_packagerepo() {
 }
 
 get_packagever() {
-    local distro="${1%-perl}"
+    local distro="$1"
     shift
+    distro="${distro%-perl}"
+    distro="${distro%-otel}"
+    distro="${distro%-slim}"
     local branch="$1"
     shift
     local suffix=
@@ -125,12 +148,16 @@ get_packagever() {
 
 get_buildtarget() {
     local distro="$1"
+    shift
     case "$distro" in
         alpine-slim)
             echo base
             ;;
         alpine-perl)
             echo module-perl
+            ;;
+        alpine-otel)
+            echo module-otel
             ;;
         alpine)
             echo module-geoip module-image-filter module-njs module-xslt
@@ -140,6 +167,9 @@ get_buildtarget() {
             ;;
         debian-perl)
             echo "nginx-module-perl=\${NGINX_VERSION}-\${PKG_RELEASE}"
+            ;;
+        debian-otel)
+            echo "nginx-module-otel"
             ;;
     esac
 }
@@ -156,8 +186,8 @@ __EOF__
 
 for branch in "${branches[@]}"; do
     for variant in \
-        alpine{,-perl,-slim} \
-        debian{,-perl}; do
+        alpine{,-perl,-otel,-slim} \
+        debian{,-perl,-otel}; do
         echo "$branch: $variant dockerfiles"
         dir="$branch/$variant"
         variant="$(basename "$variant")"
@@ -174,6 +204,7 @@ for branch in "${branches[@]}"; do
         alpinever="${alpine[$branch]}"
         nginxver="${nginx[$branch]}"
         njsver="${njs[${branch}]}"
+        otelver="${otel[${branch}]}"
         revver="${rev[${branch}]}"
         pkgosschecksumver="${pkgosschecksum[${branch}]}"
 
@@ -187,6 +218,7 @@ for branch in "${branches[@]}"; do
             -e 's,%%DEBIAN_VERSION%%,'"$debianver"',' \
             -e 's,%%NGINX_VERSION%%,'"$nginxver"',' \
             -e 's,%%NJS_VERSION%%,'"$njsver"',' \
+            -e 's,%%OTEL_VERSION%%,'"$otelver"',' \
             -e 's,%%PKG_RELEASE%%,'"$packagever"',' \
             -e 's,%%PACKAGES%%,'"$packages"',' \
             -e 's,%%PACKAGEREPO%%,'"$packagerepo"',' \
