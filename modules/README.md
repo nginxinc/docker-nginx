@@ -5,6 +5,17 @@ your own instuctions following a simple filesystem layout/syntax using
 `build_module.sh` helper script, or falling back to package sources from
 [pkg-oss](https://hg.nginx.org/pkg-oss).
 
+## Requirements
+
+To use the Dockerfiles provided here,
+[Docker BuildKit](https://docs.docker.com/build/buildkit/) is required.
+This is enabled by default as of version 23.0; for earlier versions this can be
+enabled by setting the environment variable `DOCKER_BUILDKIT` to `1`.
+
+If you can not or do not want to use BuildKit, you can use a previous version
+of these files, see for example
+https://github.com/nginxinc/docker-nginx/tree/4bf0763f4977fff7e9648add59e0540088f3ca9f/modules.
+
 ## Usage
 
 ```
