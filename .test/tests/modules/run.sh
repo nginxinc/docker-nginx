@@ -32,7 +32,7 @@ fi
 
 # Create an instance of the container-under-test
 modulesImage="$("$HOME/oi/test/tests/image-name.sh" librarytest/nginx-template "$image")"
-DOCKER_BUILDKIT=0 docker build --build-arg NGINX_FROM_IMAGE="$image" --build-arg ENABLED_MODULES="ndk set-misc echo" -t "$modulesImage" -f "modules/$dockerfile" "$GITHUB_WORKSPACE/modules"
+docker build --build-arg NGINX_FROM_IMAGE="$image" --build-arg ENABLED_MODULES="ndk set-misc echo" -t "$modulesImage" -f "modules/$dockerfile" "$GITHUB_WORKSPACE/modules"
 
 serverImage="${modulesImage}-sme"
 "$HOME/oi/test/tests/docker-build.sh" "$dir" "$serverImage" <<EOD
