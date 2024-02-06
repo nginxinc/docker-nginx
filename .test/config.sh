@@ -4,6 +4,7 @@ imageTests+=(
         static
         templates
         templates-resolver
+        templates-resolver-ipv6
         workers
         modules
 	'
