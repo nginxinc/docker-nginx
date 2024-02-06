@@ -21,7 +21,10 @@ fi
 
 # Create a new Docker network
 nid="$(docker network create --ipv6 --subnet fd0c:7e57::/64 nginx-test-ipv6-network)"
-trap "docker network rm -f $nid > /dev/null" EXIT
+
+_network_exit_handler() {
+    docker network rm -f $nid > /dev/null
+}
 
 # Create an instance of the container-under-test
 serverImage="$("$HOME/oi/test/tests/image-name.sh" librarytest/nginx-template "$image")"
@@ -30,7 +33,14 @@ FROM $image
 COPY dir/server.conf.template /etc/nginx/templates/server.conf.template
 EOD
 cid="$(docker run -d --network $nid -e NGINX_ENTRYPOINT_LOCAL_RESOLVERS=true -e NGINX_MY_SERVER_NAME=example.com "$serverImage")"
-trap "docker rm -vf $cid > /dev/null" EXIT
+
+_container_exit_handler() {
+    docker rm -vf $cid > /dev/null
+}
+_exit_handler() { _container_exit_handler; _network_exit_handler; }
+trap "_exit_handler" EXIT
+
+ipv6cid="$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.GlobalIPv6Address}}{{end}}' $cid)"
 
 _request() {
 	local method="$1"
@@ -49,12 +59,23 @@ _request() {
 	fi
 
 	docker run --rm \
-		--link "$cid":nginx \
+		--network "$nid" \
 		"$clientImage" \
-		curl -fsSL -X"$method" --connect-to '::nginx:' "$@" "$proto://example.com/$url"
+		curl -fsSL -X"$method" --connect-to "::[$ipv6cid]:" "$@" "$proto://example.com/$url"
 }
 
 . "$HOME/oi/test/retry.sh" '[ "$(_request GET / --output /dev/null || echo $?)" != 7 ]'
 
 # Check that we can request /
 _request GET http '/resolver-templates' | grep 'example.com - OK'
+
+result="$(docker exec $cid grep resolver /etc/nginx/conf.d/server.conf)"
+
+case "$result" in
+    resolver*\[*\]*)
+        echo "ipv6 nameserver(s) present"
+        ;;
+    *)
+        echo "no ipv6 nameserver(s) present"
+        ;;
+esac

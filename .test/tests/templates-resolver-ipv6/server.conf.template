@@ -2,6 +2,7 @@ resolver ${NGINX_LOCAL_RESOLVERS};
 
 server {
     listen 80;
+    listen [::]:80;
     server_name ${NGINX_MY_SERVER_NAME};
     default_type text/plain;
     location = / { return 200 'OK\n'; }
