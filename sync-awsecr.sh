@@ -108,8 +108,16 @@ echo "export DOCKER_CLI_EXPERIMENTAL=enabled"
 echo
 echo "# pulling stuff"
 for arch in ${architectures[@]}; do
+    case $arch in
+        arm64v8)
+            parch="aarch64"
+            ;;
+        *)
+            parch=$arch
+            ;;
+    esac
 for tag in ${pulllist[@]}; do
-    echo "docker pull $arch/$tag";
+    echo "docker pull --platform linux/$parch $arch/$tag";
 done
 done
 
