@@ -90,23 +90,7 @@ for version in "${versions[@]}"; do
 
 	alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
 
-	for variant in alpine alpine-perl; do
-		commit="$(dirCommit "$version/$variant")"
-
-		variantAliases=( "${versionAliases[@]/%/-$variant}" )
-		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
-		variantAliases=( "${variantAliases[@]//latest-/}" )
-
-		echo
-		cat <<-EOE
-			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64
-			GitCommit: $commit
-			Directory: $version/$variant
-		EOE
-	done
-
-	for variant in alpine-slim; do
+	for variant in alpine alpine-perl alpine-slim; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
