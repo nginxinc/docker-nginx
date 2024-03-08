@@ -71,12 +71,17 @@ for version in "${versions[@]}"; do
 	fi
 	versionAliases+=( ${aliases[$version]:-} )
 
-    for tag in ${versionAliases[@]:1}; do
+	debianVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk -F"[-:]" '$1 == "FROM debian" { print $2; exit }')"
+	debianAliases=( ${versionAliases[@]/%/-$debianVersion} )
+	debianAliases=( "${debianAliases[@]//latest-/}" )
+
+    for tag in ${versionAliases[@]:1} ${debianAliases[@]:1}; do
         taglist["$image:$tag"]="$image:$fullVersion"
     done
 
 	for variant in debian-perl; do
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
+        variantAliases+=( "${versionAliases[@]/%/-${variant/debian/$debianVersion}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
         for tag in ${variantAliases[@]}; do
@@ -86,10 +91,13 @@ for version in "${versions[@]}"; do
         done
 	done
 
+    alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
+
 	for variant in alpine alpine-perl alpine-slim; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
         for tag in ${variantAliases[@]}; do
