@@ -1,17 +1,16 @@
-FROM alpine:%%ALPINE_VERSION%%
+FROM alpine
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION %%NGINX_VERSION%%
-ENV PKG_RELEASE   %%PKG_RELEASE%%
+ENV NGINX_VERSION 1.24.0
+ENV PKG_RELEASE   1
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
     && addgroup -g 101 -S nginx \
     && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx \
     && apkArch="$(cat /etc/apk/arch)" \
-    && nginxPackages="%%PACKAGES%%
-    " \
+    && nginxPackages=x86_64\
 # install prerequisites for public key and pkg-oss checks
     && apk add --no-cache --virtual .checksum-deps \
         openssl \
@@ -28,7 +27,7 @@ RUN set -x \
                 echo "key verification failed!"; \
                 exit 1; \
             fi \
-            && apk add -X "%%PACKAGEREPO%%v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages \
+            && apk add -X "http://nginx.org/packages/alpine/v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages \
             ;; \
         *) \
 # we're on an architecture upstream doesn't officially build for
@@ -50,24 +49,11 @@ RUN set -x \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && curl -f -O https://hg.nginx.org/pkg-oss/archive/%%REVISION%%.tar.gz \
-                && PKGOSSCHECKSUM=\"%%PKGOSSCHECKSUM%% *%%REVISION%%.tar.gz\" \
-                && if [ \"\$(openssl sha512 -r %%REVISION%%.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
-                    echo \"pkg-oss tarball checksum verification succeeded!\"; \
-                else \
-                    echo \"pkg-oss tarball checksum verification failed!\"; \
-                    exit 1; \
-                fi \
-                && tar xzvf %%REVISION%%.tar.gz \
-                && cd pkg-oss-%%REVISION%% \
-                && cd alpine \
-                && make %%BUILDTARGET%% \
-                && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
-                && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
-                " \
-            && cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/ \
-            && apk del --no-network .build-deps \
-            && apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
+                && curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
+                && openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout \
+                && sudo mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/ \
+                && sudo apk add nginx \
+                && apk del --no-network .build-deps && apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
             ;; \
     esac \
 # remove checksum deps
