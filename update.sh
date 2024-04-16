@@ -12,13 +12,13 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.25.4'
+    [mainline]='1.25.5'
     [stable]='1.24.0'
 )
 
 # Current njs versions
 declare -A njs=(
-    [mainline]='0.8.3'
+    [mainline]='0.8.4'
     [stable]='0.8.0'
 )
 
@@ -41,7 +41,7 @@ declare -A debian=(
 )
 
 declare -A alpine=(
-    [mainline]='3.18'
+    [mainline]='3.19'
     [stable]='3.18'
 )
 
@@ -58,7 +58,7 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='79bf214256bf55700c776a87abfc3cf542323a267d879e89110aa44b551d12f6df7d56676a68f255ebbb54275185980d1fa37075f000d98e0ecac28db9e89fe3'
+    [mainline]='74000f32ab250be492a8ae4d408cd63a4c422f4f0af84689973a2844fceeb8a3e7e12b04d7c6dac0f993d7102d920a5f60e6f49be23ce4093f48a8eb1ae36ce5'
     [stable]='4f33347bf05e7d7dd42a52b6e7af7ec21e3ed71df05a8ec16dd1228425f04e4318d88b1340370ccb6ad02cde590fc102094ddffbb1fc86d2085295a43f02f67b'
 )
 

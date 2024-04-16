@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM nginx:1.25.4
+FROM nginx:1.25.5
 
 ENV OTEL_VERSION     0.1.0
 
