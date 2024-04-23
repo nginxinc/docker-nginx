@@ -4,7 +4,7 @@ set -eu
 declare -A aliases
 aliases=(
 	[mainline]='1 1.25 latest'
-	[stable]='1.24'
+	[stable]='1.26'
 )
 
 self="$(basename "$BASH_SOURCE")"
@@ -50,12 +50,8 @@ join() {
 }
 
 for version in "${versions[@]}"; do
-    debian_otel=
-    alpine_otel=
-    if [ "$version" = "mainline" ]; then
-        debian_otel="debian-otel"
-        alpine_otel="alpine-otel"
-    fi
+    debian_otel="debian-otel"
+    alpine_otel="alpine-otel"
 	commit="$(dirCommit "$version/$base")"
 
 	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
