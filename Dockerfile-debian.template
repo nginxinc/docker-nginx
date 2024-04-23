@@ -4,6 +4,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION   %%NGINX_VERSION%%
 ENV NJS_VERSION     %%NJS_VERSION%%
+ENV NJS_RELEASE     %%NJS_RELEASE%%
 ENV PKG_RELEASE     %%PKG_RELEASE%%
 
 RUN set -x \

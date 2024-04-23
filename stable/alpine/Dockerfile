@@ -6,6 +6,7 @@
 FROM nginx:1.26.0-alpine-slim
 
 ENV NJS_VERSION   0.8.4
+ENV NJS_RELEASE   1
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
@@ -14,7 +15,7 @@ RUN set -x \
         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE} \
-        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${PKG_RELEASE} \
+        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE} \
     " \
 # install prerequisites for public key and pkg-oss checks
     && apk add --no-cache --virtual .checksum-deps \
