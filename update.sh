@@ -22,6 +22,13 @@ declare -A njs=(
     [stable]='0.8.4'
 )
 
+# Current njs patchlevel version
+# Remember to update pkgosschecksum when changing this.
+declare -A njspkg=(
+    [mainline]='2'
+    [stable]='1'
+)
+
 # Current otel versions
 declare -A otel=(
     [mainline]='0.1.0'
@@ -50,7 +57,7 @@ declare -A alpine=(
 # when building alpine packages on architectures not supported by nginx.org
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
-    [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
+    [mainline]='93ac6e194ad0'
     [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
 )
 
@@ -58,7 +65,7 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='74000f32ab250be492a8ae4d408cd63a4c422f4f0af84689973a2844fceeb8a3e7e12b04d7c6dac0f993d7102d920a5f60e6f49be23ce4093f48a8eb1ae36ce5'
+    [mainline]='d56d10fbc6a1774e0a000b4322c5f847f8dfdcc3035b21cfd2a4a417ecce46939f39ff39ab865689b60cf6486c3da132aa5a88fa56edaad13d90715affe2daf0'
     [stable]='f0ee7cef9a6e4aa1923177eb2782577ce61837c22c59bd0c3bd027a0a4dc3a3cdc4a16e95480a075bdee32ae59c0c6385dfadb971f93931fea84976c4a21fceb'
 )
 
@@ -105,7 +112,7 @@ get_packages() {
             echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${PKG_RELEASE} \\\n'
         done
         for p in nginx-module-njs; do
-            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${PKG_RELEASE} \\'"$bn"
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${NJS_RELEASE} \\'"$bn"
         done
         for p in $otel; do
             echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${OTEL_VERSION}-'"$r"'${PKG_RELEASE} \\'
@@ -136,11 +143,13 @@ get_packagever() {
     distro="${distro%-slim}"
     local branch="$1"
     shift
+    local package="$1"
+    shift
     local suffix=
 
     [ "${distro}" = "debian" ] && suffix="~${debianver}"
 
-    echo ${pkg[$branch]}${suffix}
+    [ "${package}" = "njs" ] && echo ${njspkg[$branch]}${suffix} || echo ${pkg[$branch]}${suffix}
 }
 
 get_buildtarget() {
@@ -207,7 +216,8 @@ for branch in "${branches[@]}"; do
 
         packagerepo=$(get_packagerepo "$variant" "$branch")
         packages=$(get_packages "$variant" "$branch")
-        packagever=$(get_packagever "$variant" "$branch")
+        packagever=$(get_packagever "$variant" "$branch" "any")
+        njspkgver=$(get_packagever "$variant" "$branch" "njs")
         buildtarget=$(get_buildtarget "$variant")
 
         sed -i.bak \
@@ -215,6 +225,7 @@ for branch in "${branches[@]}"; do
             -e 's,%%DEBIAN_VERSION%%,'"$debianver"',' \
             -e 's,%%NGINX_VERSION%%,'"$nginxver"',' \
             -e 's,%%NJS_VERSION%%,'"$njsver"',' \
+            -e 's,%%NJS_RELEASE%%,'"$njspkgver"',' \
             -e 's,%%OTEL_VERSION%%,'"$otelver"',' \
             -e 's,%%PKG_RELEASE%%,'"$packagever"',' \
             -e 's,%%PACKAGES%%,'"$packages"',' \
