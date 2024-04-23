@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM nginx:1.24.0-alpine
+FROM nginx:1.26.0-alpine
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
@@ -44,16 +44,16 @@ RUN set -x \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && curl -f -O https://hg.nginx.org/pkg-oss/archive/e5d85b3424bb.tar.gz \
-                && PKGOSSCHECKSUM=\"4f33347bf05e7d7dd42a52b6e7af7ec21e3ed71df05a8ec16dd1228425f04e4318d88b1340370ccb6ad02cde590fc102094ddffbb1fc86d2085295a43f02f67b *e5d85b3424bb.tar.gz\" \
-                && if [ \"\$(openssl sha512 -r e5d85b3424bb.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
+                && curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+                && PKGOSSCHECKSUM=\"f0ee7cef9a6e4aa1923177eb2782577ce61837c22c59bd0c3bd027a0a4dc3a3cdc4a16e95480a075bdee32ae59c0c6385dfadb971f93931fea84976c4a21fceb *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
+                && if [ \"\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
                 else \
                     echo \"pkg-oss tarball checksum verification failed!\"; \
                     exit 1; \
                 fi \
-                && tar xzvf e5d85b3424bb.tar.gz \
-                && cd pkg-oss-e5d85b3424bb \
+                && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+                && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
                 && make module-perl \
                 && apk index -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \

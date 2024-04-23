@@ -13,13 +13,13 @@ declare branches=(
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
     [mainline]='1.25.5'
-    [stable]='1.24.0'
+    [stable]='1.26.0'
 )
 
 # Current njs versions
 declare -A njs=(
     [mainline]='0.8.4'
-    [stable]='0.8.0'
+    [stable]='0.8.4'
 )
 
 # Current otel versions
@@ -37,7 +37,7 @@ declare -A pkg=(
 
 declare -A debian=(
     [mainline]='bookworm'
-    [stable]='bullseye'
+    [stable]='bookworm'
 )
 
 declare -A alpine=(
@@ -51,7 +51,7 @@ declare -A alpine=(
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
     [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
-    [stable]='e5d85b3424bb'
+    [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
 )
 
 # Holds SHA512 checksum for the pkg-oss tarball produced by source code
@@ -59,7 +59,7 @@ declare -A rev=(
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
     [mainline]='74000f32ab250be492a8ae4d408cd63a4c422f4f0af84689973a2844fceeb8a3e7e12b04d7c6dac0f993d7102d920a5f60e6f49be23ce4093f48a8eb1ae36ce5'
-    [stable]='4f33347bf05e7d7dd42a52b6e7af7ec21e3ed71df05a8ec16dd1228425f04e4318d88b1340370ccb6ad02cde590fc102094ddffbb1fc86d2085295a43f02f67b'
+    [stable]='f0ee7cef9a6e4aa1923177eb2782577ce61837c22c59bd0c3bd027a0a4dc3a3cdc4a16e95480a075bdee32ae59c0c6385dfadb971f93931fea84976c4a21fceb'
 )
 
 get_packages() {
@@ -87,10 +87,7 @@ get_packages() {
     *-perl)
         perl="nginx-module-perl"
         ;;
-    esac
-
-    case "$distro:$branch" in
-    *-otel:mainline)
+    *-otel)
         otel="nginx-module-otel"
         bn="\n"
         ;;
