@@ -43,27 +43,25 @@ are available from `pkg-oss` repository:
 
 ```
 /pkg-oss $ LC_ALL=C make -C debian list-all-modules
-make: Entering directory '/pkg-oss/debian'
 auth-spnego         	1.1.1-1
 brotli              	1.0.0-1
 encrypted-session   	0.09-1
 fips-check          	0.1-1
-geoip               	1.25.1-1
+geoip               	1.25.5-1
 geoip2              	3.4-1
-headers-more        	0.34-1
-image-filter        	1.25.1-1
-lua                 	0.10.25-1
-modsecurity         	1.0.3-3
-ndk                 	0.3.2-1
-njs                 	0.8.0-1
-opentracing         	0.29.0-1
-passenger           	6.0.18-1
-perl                	1.25.1-1
+headers-more        	0.35-1
+image-filter        	1.25.5-1
+lua                 	0.10.26-1
+ndk                 	0.3.3-1
+njs                 	0.8.4-2
+opentracing         	0.33.0-1
+otel                	0.1.0-1
+passenger           	6.0.19-1
+perl                	1.25.5-1
 rtmp                	1.2.2-1
 set-misc            	0.33-1
 subs-filter         	0.6.4-1
-xslt                	1.25.1-1
-make: Leaving directory '/pkg-oss/debian'
+xslt                	1.25.5-1
 ```
 
 If you still want to provide your own instructions for a specific module,
