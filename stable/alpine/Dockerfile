@@ -9,6 +9,7 @@ ENV NJS_VERSION   0.8.4
 ENV NJS_RELEASE   2
 
 RUN set -x \
+    && apk update && apk upgrade busybox \
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-r${PKG_RELEASE} \
