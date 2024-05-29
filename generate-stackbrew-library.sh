@@ -3,7 +3,7 @@ set -eu
 
 declare -A aliases
 aliases=(
-	[mainline]='1 1.25 latest'
+	[mainline]='1 1.27 latest'
 	[stable]='1.26'
 )
 
