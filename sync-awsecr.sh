@@ -6,7 +6,7 @@ registry="public.ecr.aws/z9d2n7e1"
 
 declare -A aliases
 aliases=(
-	[mainline]='1 1.25 latest'
+	[mainline]='1 1.27 latest'
 	[stable]='1.26'
 )
 
