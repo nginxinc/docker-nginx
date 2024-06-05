@@ -4,8 +4,7 @@ ENV OTEL_VERSION   %%OTEL_VERSION%%
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
-    && nginxPackages="%%PACKAGES%%
-    " \
+    && nginxPackages="%%PACKAGES%%" \
 # install prerequisites for public key and pkg-oss checks
     && apk add --no-cache --virtual .checksum-deps \
         openssl \

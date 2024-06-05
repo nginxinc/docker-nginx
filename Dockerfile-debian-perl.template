@@ -3,8 +3,7 @@ FROM nginx:%%NGINX_VERSION%%
 RUN set -x; \
     NGINX_GPGKEY_PATH=/etc/apt/keyrings/nginx-archive-keyring.gpg; \
     dpkgArch="$(dpkg --print-architecture)" \
-    && nginxPackages="%%PACKAGES%%
-    " \
+    && nginxPackages="%%PACKAGES%%" \
     && case "$dpkgArch" in \
         amd64|arm64) \
 # arches officialy built by upstream
