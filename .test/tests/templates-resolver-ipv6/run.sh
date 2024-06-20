@@ -68,14 +68,3 @@ _request() {
 
 # Check that we can request /
 _request GET http '/resolver-templates' | grep 'example.com - OK'
-
-result="$(docker exec $cid grep resolver /etc/nginx/conf.d/server.conf)"
-
-case "$result" in
-    resolver*\[*\]*)
-        echo "ipv6 nameserver(s) present"
-        ;;
-    *)
-        echo "no ipv6 nameserver(s) present"
-        ;;
-esac
