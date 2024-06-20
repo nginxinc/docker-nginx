@@ -1,2 +1,1 @@
 example.com - OK
-ipv6 nameserver(s) present
