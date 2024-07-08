@@ -5,8 +5,8 @@
 #
 FROM nginx:1.27.0-alpine-slim
 
-ENV NJS_VERSION   0.8.4
-ENV NJS_RELEASE   2
+ENV NJS_VERSION=0.8.4
+ENV NJS_RELEASE=2
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \

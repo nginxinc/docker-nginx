@@ -1,6 +1,6 @@
 FROM nginx:%%NGINX_VERSION%%-alpine
 
-ENV OTEL_VERSION   %%OTEL_VERSION%%
+ENV OTEL_VERSION=%%OTEL_VERSION%%
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \

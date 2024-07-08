@@ -2,10 +2,10 @@ FROM debian:%%DEBIAN_VERSION%%-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   %%NGINX_VERSION%%
-ENV NJS_VERSION     %%NJS_VERSION%%
-ENV NJS_RELEASE     %%NJS_RELEASE%%
-ENV PKG_RELEASE     %%PKG_RELEASE%%
+ENV NGINX_VERSION=%%NGINX_VERSION%%
+ENV NJS_VERSION=%%NJS_VERSION%%
+ENV NJS_RELEASE=%%NJS_RELEASE%%
+ENV PKG_RELEASE=%%PKG_RELEASE%%
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
