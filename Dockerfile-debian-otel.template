@@ -1,6 +1,6 @@
 FROM nginx:%%NGINX_VERSION%%
 
-ENV OTEL_VERSION     %%OTEL_VERSION%%
+ENV OTEL_VERSION=%%OTEL_VERSION%%
 
 RUN set -x; \
     NGINX_GPGKEY_PATH=/etc/apt/keyrings/nginx-archive-keyring.gpg; \
