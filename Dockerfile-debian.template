@@ -6,6 +6,7 @@ ENV NGINX_VERSION   %%NGINX_VERSION%%
 ENV NJS_VERSION     %%NJS_VERSION%%
 ENV NJS_RELEASE     %%NJS_RELEASE%%
 ENV PKG_RELEASE     %%PKG_RELEASE%%
+ENV DYNPKG_RELEASE  %%DYNPKG_RELEASE%%
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
