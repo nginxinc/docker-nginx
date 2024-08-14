@@ -7,10 +7,11 @@ FROM debian:bookworm-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.27.0
-ENV NJS_VERSION     0.8.4
-ENV NJS_RELEASE     2~bookworm
-ENV PKG_RELEASE     2~bookworm
+ENV NGINX_VERSION   1.27.1
+ENV NJS_VERSION     0.8.5
+ENV NJS_RELEASE     1~bookworm
+ENV PKG_RELEASE     1~bookworm
+ENV DYNPKG_RELEASE  2~bookworm
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -39,9 +40,9 @@ RUN set -x \
     && dpkgArch="$(dpkg --print-architecture)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-xslt=${NGINX_VERSION}-${DYNPKG_RELEASE} \
+        nginx-module-geoip=${NGINX_VERSION}-${DYNPKG_RELEASE} \
+        nginx-module-image-filter=${NGINX_VERSION}-${DYNPKG_RELEASE} \
         nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${NJS_RELEASE} \
     " \
     && case "$dpkgArch" in \

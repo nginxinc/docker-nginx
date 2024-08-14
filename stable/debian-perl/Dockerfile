@@ -3,17 +3,17 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM nginx:1.26.1
+FROM nginx:1.26.2
 
 RUN set -x; \
     NGINX_GPGKEY_PATH=/etc/apt/keyrings/nginx-archive-keyring.gpg; \
     dpkgArch="$(dpkg --print-architecture)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-perl=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-module-xslt=${NGINX_VERSION}-${DYNPKG_RELEASE} \
+        nginx-module-geoip=${NGINX_VERSION}-${DYNPKG_RELEASE} \
+        nginx-module-image-filter=${NGINX_VERSION}-${DYNPKG_RELEASE} \
+        nginx-module-perl=${NGINX_VERSION}-${DYNPKG_RELEASE} \
         nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${NJS_RELEASE} \
     " \
     && case "$dpkgArch" in \
@@ -37,11 +37,11 @@ RUN set -x; \
             \
 # build .deb files from upstream's source packages (which are verified by apt-get)
             && apt-get update \
-            && apt-get build-dep -y nginx-module-perl=${NGINX_VERSION}-${PKG_RELEASE} \
+            && apt-get build-dep -y nginx-module-perl=${NGINX_VERSION}-${DYNPKG_RELEASE} \
             && ( \
                 cd "$tempDir" \
                 && DEB_BUILD_OPTIONS="nocheck parallel=$(nproc)" \
-                    apt-get source --compile nginx-module-perl=${NGINX_VERSION}-${PKG_RELEASE} \
+                    apt-get source --compile nginx-module-perl=${NGINX_VERSION}-${DYNPKG_RELEASE} \
             ) \
 # we don't remove APT lists here because they get re-downloaded and removed later
             \
