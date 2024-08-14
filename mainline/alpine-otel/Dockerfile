@@ -43,6 +43,7 @@ RUN set -x \
                 bash \
                 alpine-sdk \
                 findutils \
+                curl \
                 xz \
                 re2-dev \
                 c-ares-dev \
