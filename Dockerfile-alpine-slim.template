@@ -2,8 +2,9 @@ FROM alpine:%%ALPINE_VERSION%%
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION %%NGINX_VERSION%%
-ENV PKG_RELEASE   %%PKG_RELEASE%%
+ENV NGINX_VERSION  %%NGINX_VERSION%%
+ENV PKG_RELEASE    %%PKG_RELEASE%%
+ENV DYNPKG_RELEASE %%DYNPKG_RELEASE%%
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
