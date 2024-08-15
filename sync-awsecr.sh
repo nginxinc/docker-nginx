@@ -91,6 +91,7 @@ for version in "${versions[@]}"; do
         done
 	done
 
+    commit="$(dirCommit "$version/alpine-slim")"
     alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
 
 	for variant in alpine alpine-perl alpine-slim; do
