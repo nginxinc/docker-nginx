@@ -26,24 +26,46 @@ RUN set -x; \
             ;; \
         *) \
 # we're on an architecture upstream doesn't officially build for
-# let's build binaries from the published source packages
-            echo "deb-src [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/debian/ bookworm nginx" >> /etc/apt/sources.list.d/nginx.list \
-            \
+# let's build binaries from the published packaging sources
 # new directory for storing sources and .deb files
-            && tempDir="$(mktemp -d)" \
+            tempDir="$(mktemp -d)" \
             && chmod 777 "$tempDir" \
 # (777 to ensure APT's "_apt" user can access it too)
             \
 # save list of currently-installed packages so build dependencies can be cleanly removed later
             && savedAptMark="$(apt-mark showmanual)" \
             \
-# build .deb files from upstream's source packages (which are verified by apt-get)
+# build .deb files from upstream's packaging sources
             && apt-get update \
-            && apt-get build-dep -y nginx-module-otel \
+            && apt-get install --no-install-recommends --no-install-suggests -y \
+                curl \
+                devscripts \
+                equivs \
+                git \
+                libxml2-utils \
+                lsb-release \
+                xsltproc \
             && ( \
                 cd "$tempDir" \
-                && DEB_BUILD_OPTIONS="nocheck parallel=$(nproc)" \
-                    apt-get source --compile nginx-module-otel \
+                && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
+                && REVISION=${REVISION%~*} \
+                && curl -f -O https://hg.nginx.org/pkg-oss/archive/${REVISION}.tar.gz \
+                && PKGOSSCHECKSUM="825f610c44dfb97166112e6d060c0ba209a74f50e42c7c23a5b8742f468596f110bb1b4ca9299547a8a3d41f3a7caa864622f40f6c7bb4d8bab3d24880bdfb6a *${REVISION}.tar.gz" \
+                && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
+                    echo "pkg-oss tarball checksum verification succeeded!"; \
+                else \
+                    echo "pkg-oss tarball checksum verification failed!"; \
+                    exit 1; \
+                fi \
+                && tar xzvf ${REVISION}.tar.gz \
+                && cd pkg-oss-${REVISION} \
+                && cd debian \
+                && for target in module-otel; do \
+                    make rules-$target; \
+                    mk-build-deps --install --tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes" \
+                        debuild-$target/nginx-$NGINX_VERSION/debian/control; \
+                done \
+                && make module-otel \
             ) \
 # we don't remove APT lists here because they get re-downloaded and removed later
             \
