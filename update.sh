@@ -179,23 +179,17 @@ get_buildtarget() {
         alpine-slim)
             echo base
             ;;
-        alpine-perl)
-            echo module-perl
-            ;;
-        alpine-otel)
-            echo module-otel
-            ;;
         alpine)
             echo module-geoip module-image-filter module-njs module-xslt
             ;;
         debian)
-            echo "\$nginxPackages"
+            echo base module-geoip module-image-filter module-njs module-xslt
             ;;
-        debian-perl)
-            echo "nginx-module-perl=\${NGINX_VERSION}-\${DYNPKG_RELEASE}"
+        *-perl)
+            echo module-perl
             ;;
-        debian-otel)
-            echo "nginx-module-otel"
+        *-otel)
+            echo module-otel
             ;;
     esac
 }
