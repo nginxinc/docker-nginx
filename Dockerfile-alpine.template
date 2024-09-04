@@ -40,7 +40,7 @@ RUN set -x \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && curl -f -O https://hg.nginx.org/pkg-oss/archive/%%REVISION%%.tar.gz \
+                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/%%REVISION%%.tar.gz \
                 && PKGOSSCHECKSUM=\"%%PKGOSSCHECKSUM%% *%%REVISION%%.tar.gz\" \
                 && if [ \"\$(openssl sha512 -r %%REVISION%%.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
