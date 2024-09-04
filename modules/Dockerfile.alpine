@@ -19,7 +19,7 @@ RUN apk update \
     # allow abuild as a root user \
     && printf "#!/bin/sh\\nSETFATTR=true /usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
     && chmod +x /usr/local/bin/abuild \
-    && hg clone -r ${NGINX_VERSION}-${PKG_RELEASE} https://hg.nginx.org/pkg-oss/ \
+    && git clone -b ${NGINX_VERSION}-${PKG_RELEASE} https://github.com/nginx/pkg-oss/ \
     && cd pkg-oss \
     && mkdir /tmp/packages \
     && for module in $ENABLED_MODULES; do \

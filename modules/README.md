@@ -3,7 +3,7 @@
 It's possible to extend a mainline image with third-party modules either from
 your own instuctions following a simple filesystem layout/syntax using
 `build_module.sh` helper script, or falling back to package sources from
-[pkg-oss](https://hg.nginx.org/pkg-oss).
+[pkg-oss](https://github.com/nginx/pkg-oss).
 
 ## Requirements
 
@@ -101,7 +101,7 @@ reproduce with a vanilla image first.
 ### docker-compose with pre-packaged modules
 
 If desired modules are already packaged in
-[pkg-oss](https://hg.nginx.org/pkg-oss/) - e.g. `debian/Makefile.module-*`
+[pkg-oss](https://github.com/nginx/pkg-oss/) - e.g. `debian/Makefile.module-*`
 exists for a given module, you can use this example.
 
 1. Create a directory for your project:
