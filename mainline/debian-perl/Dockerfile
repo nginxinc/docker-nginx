@@ -47,8 +47,8 @@ RUN set -x; \
                 cd "$tempDir" \
                 && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
                 && REVISION=${REVISION%~*} \
-                && curl -f -O https://hg.nginx.org/pkg-oss/archive/${REVISION}.tar.gz \
-                && PKGOSSCHECKSUM="b9fbdf1779186fc02aa59dd87597fe4e906892391614289a4e6eedba398a3e770347b5b07110cca8c11fa3ba85bb711626ae69832e74c69ca8340d040a465907 *${REVISION}.tar.gz" \
+                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
+                && PKGOSSCHECKSUM="e1a8e980d904df21484fc09793f1c938d566dcf0e752171714e70fc364dcd54b1bf3ce3e2ec90747114c5b24ac8050f1e8c6a774ff4476508d5dc99666e59443 *${REVISION}.tar.gz" \
                 && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
                     echo "pkg-oss tarball checksum verification succeeded!"; \
                 else \
