@@ -7,7 +7,7 @@ FROM ubuntu:latest
 RUN apt-get update && \
     apt-get install -y nginx && \
     apt-get clean
-RUN apt-get install curl
+#RUN apt-get install curl
 
 # Copier le fichier de configuration Nginx personnalisé (si nécessaire)
 # COPY nginx.conf /etc/nginx/nginx.conf
