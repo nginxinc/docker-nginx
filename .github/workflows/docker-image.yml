@@ -17,6 +17,9 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
+    - name: Run Nginx container
+      run: docker run -d -p 80:80  my-image-name:$(date +%s)
+
     - name: test nginx with curl
       run: |
           sudo apt-get install curl -y
