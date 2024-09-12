@@ -24,6 +24,15 @@ jobs:
       run: |
           sudo apt-get install curl -y
           curl localhost | grep nginx
-          
-           
+        
+  secret:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+      
+    - name: testsecret
+      run: echo  ${{ secrets.valeursecrete }}
+
       
