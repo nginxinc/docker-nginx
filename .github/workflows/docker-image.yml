@@ -17,3 +17,11 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
+    steps:
+    - name: test nginx with curl
+      run: |
+          apt-get install curl -y
+          curl localhost | grep nginx
+          
+           
+      
