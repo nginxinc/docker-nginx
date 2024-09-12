@@ -19,7 +19,7 @@ jobs:
 
     - name: test nginx with curl
       run: |
-          apt-get install curl -y
+          sudo apt-get install curl -y
           curl localhost | grep nginx
           
            
