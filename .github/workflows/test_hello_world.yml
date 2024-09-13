@@ -10,7 +10,4 @@ jobs:
         uses: ./.github/actions/hello_world
         with:
           monnom: 'Léo'
-    #   - run: echo random-number "$RANDOM_NUMBER"
-    #     shell: bash
-    #     env:
-    #       RANDOM_NUMBER: ${{ steps.foo.outputs.random-number }}
+ 
