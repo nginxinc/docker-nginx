@@ -1,11 +1,22 @@
 name: Docker Image CI
-#test
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
+on:
+#  push:
+#    branches: [ "master" ]
+#  pull_request:
+#    branches: [ "master" ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description:
+          choix de de l'environnement
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - preprod
+          - prod
 jobs:
 
   build:
@@ -30,14 +41,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    environment: secret
+    environment: ${{github.event.inputs.environment}} 
 
     steps:
     
       
     - name: testsecret
       run: |
-        echo  ${{ secrets.VALEURSECRETE}}
-        echo  ${{ vars.MAVARIABLE}}
+        echo  ${{ github.event.inputs.environment.MAVARIABLE}}
 
       
