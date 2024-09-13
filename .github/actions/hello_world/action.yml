@@ -14,9 +14,9 @@ runs:
   steps:
     - name: Set Greeting
       run: echo "Hello $INPUT_WHO_TO_GREET."
-    #   shell: bash
-    #   env:
-    #     INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
+      shell: bash
+      env:
+        INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
 
     # - name: Random Number Generator
     #   id: random-number-generator
