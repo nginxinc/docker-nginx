@@ -9,8 +9,8 @@ jobs:
       - id: foo
         uses: ./.github/actions/hello_world
         with:
-          who-to-greet: 'Mona the Octocat'
-      - run: echo random-number "$RANDOM_NUMBER"
-        shell: bash
-        env:
-          RANDOM_NUMBER: ${{ steps.foo.outputs.random-number }}
+          monnom: 'Léo'
+    #   - run: echo random-number "$RANDOM_NUMBER"
+    #     shell: bash
+    #     env:
+    #       RANDOM_NUMBER: ${{ steps.foo.outputs.random-number }}
