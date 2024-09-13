@@ -48,6 +48,6 @@ jobs:
       
     - name: testsecret
       run: |
-        echo  ${{ github.event.inputs.environment.MAVARIABLE}}
+        echo  ${{ environment.MAVARIABLE}}
 
       
