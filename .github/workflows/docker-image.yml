@@ -48,6 +48,6 @@ jobs:
       
     - name: testsecret
       run: |
-        echo  ${{ environment.MAVARIABLE}}
+        echo  ${{ vars.MAVARIABLE}}
 
       
