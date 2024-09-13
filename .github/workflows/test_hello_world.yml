@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: foo
-        uses: leo300000/docker-nginx/blob/master/.github/actions/hello_world/action.yml@master
+        uses: ./.github/actions/hello_world
         with:
           who-to-greet: 'Mona the Octocat'
       - run: echo random-number "$RANDOM_NUMBER"
