@@ -2,7 +2,7 @@ name: 'Hello World'
 description: 'Greet someone'
 inputs:
   monnom:  # id of input
-    description: 'Who to greet'
+    description: 'Who to greet' #
     required: true
     default: 'World'
 
@@ -12,7 +12,6 @@ runs:
     - name: Set Greeting
       run: echo "Hello $INPUT_WHO_TO_GREET."
       shell: bash
-      # env:
-      #   INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
+
 
 
