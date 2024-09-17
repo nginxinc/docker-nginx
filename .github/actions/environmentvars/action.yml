@@ -1,0 +1,38 @@
+name: 'variableenv'
+description: 'test'
+outputs:
+  monenv:
+    description: "mon environnement actuelle"
+    value: ${{ steps.monenvironnement.outputs.lavariable }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: trouverenv
+      id: monenvironnement
+      run: echo "lavariable >> $GITHUB_OUTPUT  #à modifier
+      shell: bash
+
+
+name: 'variableenv'
+description: 'test'
+outputs:
+  monenv:
+    description: "mon environnement actuel"
+    value: ${{ steps.monenvironnement.outputs.lavariable }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: trouverenv
+      id: monenvironnement
+      run: |
+        if [ "${{ github.event.inputs.environment }}" ]; then
+          echo "lavariable=mavariable_${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+        elif [ "${{ github.ref }}" == "refs/heads/prod" ]; then
+          echo "lavariable=mavariable_prod" >> $GITHUB_OUTPUT
+        elif [ "${{ github.ref }}" == "refs/heads/preprod" ]; then
+          echo "lavariable=mavariable_preprod" >> $GITHUB_OUTPUT
+        else
+          echo "lavariable=mavariable_dev" >> $GITHUB_OUTPUT
+      shell: bash
