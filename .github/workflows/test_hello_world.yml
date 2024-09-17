@@ -6,7 +6,7 @@ jobs:
     name: A job to say hello
     steps:
       - uses: actions/checkout@v4
-      - name: foo  
+      - name: searchfilescripthelloworld 
         uses: ./.github/actions/hello_world #chemin d'accès au action.yml qui va se lancer directement
         with: #le with sert à mdofier les valeurs du "template" par exemple on veut un nom avec leo au lieu de tata du template actions
           monnom: 'Léo'  
