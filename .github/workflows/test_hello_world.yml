@@ -1,9 +1,24 @@
+# on:
+#   push:
+#     branches: 
+#       - dev
+#       - preprod
+      # - prod
+
 on:
-  push:
-    branches: 
-      - dev
-      - preprod
-      - prod
+  workflow_dispatch:
+    inputs:
+      environment:
+        description:
+          choix de de l'environnement
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - preprod
+          - prod
+
 
 jobs:
   choix_env:
