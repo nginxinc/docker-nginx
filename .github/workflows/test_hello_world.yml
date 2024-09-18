@@ -27,6 +27,15 @@ jobs:
       - name: verif env
         uses: ./.github/actions/environment # chemin d'accès au action.yml qui va se lancer directement
 
+  affichagevarariable:
+    needs: choix_env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: affichage_env
+        run: echo "${{monenv}}"
+
 
   hello_world_job:
     runs-on: ubuntu-latest
