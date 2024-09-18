@@ -35,3 +35,6 @@ jobs:
         uses: ./.github/actions/hello_world # chemin d'accès au action.yml qui va se lancer directement
         with: # le with sert à modifier les valeurs du "template" par exemple on veut un nom avec leo au lieu de tata du template actions
           monnom: 'Léo'
+
+
+          #test
