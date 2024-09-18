@@ -2,7 +2,7 @@ name: 'variableenv'
 description: 'test'
 outputs:
   monenv:
-    description: "mon environnement actuel"
+    description: "mon environnement actuelle"
     value: ${{ steps.monenvironnement.outputs.env }}
 
 runs: 
@@ -12,12 +12,13 @@ runs:
       id: monenvironnement
       run: |
         if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
-          echo "monenv=dev" >> $GITHUB_OUTPUT
+          echo "env=dev" >> $GITHUB_OUTPUT
         elif [[ "${{ github.ref }}" == "refs/heads/preprod" ]]; then
-          echo "monenv=preprod" >> $GITHUB_OUTPUT
+          echo "env=preprod" >> $GITHUB_OUTPUT
         elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
-          echo "monenv=prod" >> $GITHUB_OUTPUT
+          echo "env=prod" >> $GITHUB_OUTPUT
         else
-          echo "monenv=unknown" >> $GITHUB_OUTPUT
+          echo "env=unknown" >> $GITHUB_OUTPUT
         fi
+
       shell: bash
