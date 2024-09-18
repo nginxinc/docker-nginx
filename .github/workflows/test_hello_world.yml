@@ -5,27 +5,17 @@ on:
       - preprod
       - prod
 
-# workflow_dispatch:
-#   inputs:
-#     environment:
-#       description: "choix de l'environnement"
-#       required: true
-#       default: 'dev'
-#       type: string
-#       options:
-#         - dev
-#         - preprod
-#         - prod
-
-
 jobs:
   choix_env:
     runs-on: ubuntu-latest
+    outputs:
+      monenv: ${{ steps.verif_env.outputs.monenv }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: verif env
-        uses: ./.github/actions/environment # chemin d'accès au action.yml qui va se lancer directement
+        id: verif_env
+        uses: ./.github/actions/environment # chemin d'accès au action.yml
 
   affichagevarariable:
     needs: choix_env
@@ -34,8 +24,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: affichage_env
-        run: echo ${{needs.choix_env.outputs.monenv}}
-
+        run: echo ${{ needs.choix_env.outputs.monenv }}
 
   hello_world_job:
     runs-on: ubuntu-latest
@@ -43,9 +32,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: searchfilescripthelloworld 
-        uses: ./.github/actions/hello_world # chemin d'accès au action.yml qui va se lancer directement
-        with: # le with sert à modifier les valeurs du "template" par exemple on veut un nom avec leo au lieu de tata du template actions
+        uses: ./.github/actions/hello_world # chemin d'accès au action.yml
+        with:
           monnom: 'Léo'
-
-
-          #test
