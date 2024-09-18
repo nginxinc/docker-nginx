@@ -11,7 +11,7 @@ on:
         description: 'choix de l'environnement'
         required: true
         default: 'dev'
-        type: choice
+        type: string
         options:
           - dev
           - preprod
