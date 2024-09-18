@@ -7,6 +7,9 @@ outputs:
 
 
 steps:
+  - name: Checkout repository
+      uses: actions/checkout@v2
+      
   - name: trouverenv
     id: monenvironnement
     run: |
