@@ -12,7 +12,7 @@ on:
         description:
           choix de de l'environnement
         required: true
-        default: 'dev'
+        default: 'preprod'
         type: choice
         options:
           - dev
