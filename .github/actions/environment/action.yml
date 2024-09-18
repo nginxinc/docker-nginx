@@ -16,9 +16,7 @@ steps:
         echo "env=preprod" >> $GITHUB_OUTPUT
       elif [ "${{ github.ref }}" == "refs/heads/prod" ]; then
         echo "env=prod" >> $GITHUB_OUTPUT
-      else
-        echo "env=unknown" >> $GITHUB_OUTPUT
-      fi
+
     shell: bash
 
 
