@@ -26,7 +26,7 @@ jobs:
       - name: affichage_env
         run: |
           echo ${{ needs.choix_env.outputs.monenv }}
-          echo ${{ needs.choix_env.outputs.monenv.MAVARIABLE }}
+          echo ${{ needs.choix_env.outputs.vars.monenv.MAVARIABLE }}
 
   hello_world_job:
     runs-on: ubuntu-latest
