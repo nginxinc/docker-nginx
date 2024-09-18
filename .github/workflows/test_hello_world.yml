@@ -8,7 +8,7 @@ on:
 workflow_dispatch:
   inputs:
     environment:
-      description: "choix de lenvironnement"
+      description: "choix de l'environnement"
       required: true
       default: 'dev'
       type: string
