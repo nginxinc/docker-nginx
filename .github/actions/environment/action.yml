@@ -3,7 +3,7 @@ description: 'test'
 outputs:
   monenv:
     description: "mon environnement actuelle"
-    value: ${{ steps.monenvironnement.outputs.lavariable }}
+    value: ${{ steps.monenvironnement.outputs.env }}
 
 runs: 
   using: 'composite'     
