@@ -5,17 +5,17 @@ on:
       - preprod
       - prod
 
-workflow_dispatch:
-  inputs:
-    environment:
-      description: "choix de l'environnement"
-      required: true
-      default: 'dev'
-      type: string
-      options:
-        - dev
-        - preprod
-        - prod
+# workflow_dispatch:
+#   inputs:
+#     environment:
+#       description: "choix de l'environnement"
+#       required: true
+#       default: 'dev'
+#       type: string
+#       options:
+#         - dev
+#         - preprod
+#         - prod
 
 
 jobs:
