@@ -22,6 +22,8 @@ jobs:
   choix_env:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: verif env
         uses: ./.github/actions/environment # chemin d'accès au action.yml qui va se lancer directement
 
