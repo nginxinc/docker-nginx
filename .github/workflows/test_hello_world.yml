@@ -20,13 +20,14 @@ jobs:
   affichagevarariable:
     needs: choix_env
     runs-on: ubuntu-latest
+    environment: ${{ needs.choix_env.outputs.monenv }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: affichage_env
         run: |
           echo ${{ needs.choix_env.outputs.monenv }}
-          echo ${{ needs.choix_env.outputs.vars.monenv.MAVARIABLE }}
+          echo ${{ vars.MAVARIABLE }}
 
   hello_world_job:
     runs-on: ubuntu-latest
