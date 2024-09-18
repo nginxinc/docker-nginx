@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: affichage_env
         run: echo ${{ needs.choix_env.outputs.monenv }}
+        run: echo ${{ needs.choix_env.outputs.preprod.mavariable }}
 
   hello_world_job:
     runs-on: ubuntu-latest
