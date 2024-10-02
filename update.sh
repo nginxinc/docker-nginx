@@ -12,13 +12,13 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.27.1'
+    [mainline]='1.27.2'
     [stable]='1.26.2'
 )
 
 # Current njs versions
 declare -A njs=(
-    [mainline]='0.8.5'
+    [mainline]='0.8.6'
     [stable]='0.8.5'
 )
 
@@ -45,7 +45,7 @@ declare -A pkg=(
 # Current built-in dynamic modules package patchlevel version
 # Remember to update pkgosschecksum when changing this
 declare -A dynpkg=(
-    [mainline]=2
+    [mainline]=1
     [stable]=2
 )
 
@@ -72,7 +72,7 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='e1a8e980d904df21484fc09793f1c938d566dcf0e752171714e70fc364dcd54b1bf3ce3e2ec90747114c5b24ac8050f1e8c6a774ff4476508d5dc99666e59443'
+    [mainline]='6982e2df739645fc72db5bdf994032f799718230e7016e811d9d482e5cf41814c888660ca9a68814d5e99ab571e892ada3bd43166e720cbf04c7f85b6934772c'
     [stable]='b5d8ad59567a5df18f134236c4e22a339229cd56f4b2ae8d1b77a17f3dcfb16672103bd9191d419acf93c90e866b59417aad26ad7710d9dcc53bf38d1f88d764'
 )
 

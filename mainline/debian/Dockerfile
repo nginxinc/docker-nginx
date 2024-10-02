@@ -7,11 +7,11 @@ FROM debian:bookworm-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.27.1
-ENV NJS_VERSION     0.8.5
+ENV NGINX_VERSION   1.27.2
+ENV NJS_VERSION     0.8.6
 ENV NJS_RELEASE     1~bookworm
 ENV PKG_RELEASE     1~bookworm
-ENV DYNPKG_RELEASE  2~bookworm
+ENV DYNPKG_RELEASE  1~bookworm
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -77,7 +77,7 @@ RUN set -x \
                 && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
                 && REVISION=${REVISION%~*} \
                 && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
-                && PKGOSSCHECKSUM="e1a8e980d904df21484fc09793f1c938d566dcf0e752171714e70fc364dcd54b1bf3ce3e2ec90747114c5b24ac8050f1e8c6a774ff4476508d5dc99666e59443 *${REVISION}.tar.gz" \
+                && PKGOSSCHECKSUM="6982e2df739645fc72db5bdf994032f799718230e7016e811d9d482e5cf41814c888660ca9a68814d5e99ab571e892ada3bd43166e720cbf04c7f85b6934772c *${REVISION}.tar.gz" \
                 && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
                     echo "pkg-oss tarball checksum verification succeeded!"; \
                 else \
