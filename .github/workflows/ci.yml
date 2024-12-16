@@ -19,7 +19,7 @@ jobs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
       - uses: actions/checkout@v3
-      - uses: docker-library/bashbrew@v0.1.8
+      - uses: docker-library/bashbrew@v0.1.12
       - id: generate-jobs
         name: Generate Jobs
         run: |
