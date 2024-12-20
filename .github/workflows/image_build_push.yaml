@@ -1,6 +1,15 @@
 name: Build Image and Push
 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The tag to apply to this build. Defaults to 'latest'."
+        default: "latest"
+        required: false
+  schedule:
+    - cron: '0 0 * * 0' # Weekly on Sunday at 00:00
+  push:
 
 jobs:
   ci:
