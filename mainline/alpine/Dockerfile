@@ -5,7 +5,7 @@
 #
 FROM nginx:1.27.3-alpine-slim
 
-ENV NJS_VERSION   0.8.7
+ENV NJS_VERSION   0.8.8
 ENV NJS_RELEASE   1
 
 RUN set -x \
@@ -50,16 +50,16 @@ RUN set -x \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-                && PKGOSSCHECKSUM=\"5617feecfb441cd972b9ac51a2fd78384a3d2bde2f399163be0746d44ec8f7d8c47234af4f6b0012667c3d0446cced521f55f8f71254415e3766c2e3802bf960 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
-                && if [ \"\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
+                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/0286c5190d972a49bffc9bf247885dd510ce8181.tar.gz \
+                && PKGOSSCHECKSUM=\"1e546bd15d7bc68e1772ecb6a73e29ba108ee5554a28928e57af038a9e8fc4f5cd35708ce89ad1dfaac97d870e663d32ef41045611d30b20d38b46816e3ab535 *0286c5190d972a49bffc9bf247885dd510ce8181.tar.gz\" \
+                && if [ \"\$(openssl sha512 -r 0286c5190d972a49bffc9bf247885dd510ce8181.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
                 else \
                     echo \"pkg-oss tarball checksum verification failed!\"; \
                     exit 1; \
                 fi \
-                && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-                && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
+                && tar xzvf 0286c5190d972a49bffc9bf247885dd510ce8181.tar.gz \
+                && cd pkg-oss-0286c5190d972a49bffc9bf247885dd510ce8181 \
                 && cd alpine \
                 && make module-geoip module-image-filter module-njs module-xslt \
                 && apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
