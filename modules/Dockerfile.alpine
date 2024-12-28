@@ -1,5 +1,5 @@
 ARG NGINX_FROM_IMAGE=nginx:mainline-alpine
-FROM ${NGINX_FROM_IMAGE} as builder
+FROM ${NGINX_FROM_IMAGE} AS builder
 
 ARG ENABLED_MODULES
 
