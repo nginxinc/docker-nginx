@@ -3,9 +3,9 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM nginx:1.26.2-alpine
+FROM nginx:1.26.3-alpine
 
-ENV OTEL_VERSION   0.1.0
+ENV OTEL_VERSION   0.1.1
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
@@ -45,21 +45,21 @@ RUN set -x \
                 findutils \
                 curl \
                 xz \
-                re2-dev \
-                c-ares-dev \
+                protobuf-dev \
+                grpc-dev \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/f43e929dc7a6111ef5d9ecb281a75749f7934261.tar.gz \
-                && PKGOSSCHECKSUM=\"315e9e9040253396ebd9f540557e69cda7d9754a7895c3bf04fbf79d43be8d56e8efc6c22c21c87632039340080511179946456bbc4660e8faf171d130b475a6 *f43e929dc7a6111ef5d9ecb281a75749f7934261.tar.gz\" \
-                && if [ \"\$(openssl sha512 -r f43e929dc7a6111ef5d9ecb281a75749f7934261.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
+                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+                && PKGOSSCHECKSUM=\"3a4e869eded0c71e92f522e94edffea7fbfb5e78886ea7e484342fa2e028c62099a67d08860c249bf93776da97b924225e0d849dbb4697b298afe5421d7d6fea *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
+                && if [ \"\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
                 else \
                     echo \"pkg-oss tarball checksum verification failed!\"; \
                     exit 1; \
                 fi \
-                && tar xzvf f43e929dc7a6111ef5d9ecb281a75749f7934261.tar.gz \
-                && cd pkg-oss-f43e929dc7a6111ef5d9ecb281a75749f7934261 \
+                && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+                && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
                 && make module-otel \
                 && apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
