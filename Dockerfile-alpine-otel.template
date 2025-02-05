@@ -34,8 +34,8 @@ RUN set -x \
                 findutils \
                 curl \
                 xz \
-                re2-dev \
-                c-ares-dev \
+                protobuf-dev \
+                grpc-dev \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
