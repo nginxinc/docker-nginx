@@ -1,7 +1,7 @@
 # Adding third-party modules to nginx official image
 
 It's possible to extend a mainline image with third-party modules either from
-your own instuctions following a simple filesystem layout/syntax using
+your own instructions following a simple filesystem layout/syntax using
 `build_module.sh` helper script, or falling back to package sources from
 [pkg-oss](https://github.com/nginx/pkg-oss).
 
